@@ -3,6 +3,8 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
+import { ButtplugDeviceMessageType } from "buttplug";
+
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
@@ -25,10 +27,23 @@ const Play: NextPage = () => {
                            {d.Name} 
                         </h1>
                         <div className="pb-2">
-                            <Slider onChange={(e) => d.vibrate(e as number / 100)} className={styles.slider} />
+                            {
+                                (() => {
+                                    const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
+                                    console.log(vibrate_attributes)
+                                    return (
+                                        vibrate_attributes && 
+                                            <Slider onChange={(e) => d.vibrate(e as number / 100)} className={styles.slider} />
+                                            
+                                    )
+                                })()                  
+                            }
                         </div>
                         <div className="flex justify-end gap-3">
-                            <button className="action" onClick={() => d.stop()}>Stop</button>
+                            {
+                                d.messageAttributes(ButtplugDeviceMessageType.StopDeviceCmd) && 
+                                <button className="action" onClick={() => d.stop()}>Stop</button>
+                            }
                         </div>
                     </div>
                 ))
