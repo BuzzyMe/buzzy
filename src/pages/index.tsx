@@ -9,9 +9,9 @@ const Home: NextPage = () => {
     return (
         <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-16">
             <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
-                Buzzy
+                Buzzy!
             </h1>
-            <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "Login to get started!"}</p>
+            <p className="text-2xl">Have some fun :3</p>
             <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                 <CardLink
                     name="Play"
