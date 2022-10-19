@@ -9,7 +9,6 @@ interface PeerProviderProps {
 
 export const PeerProvider: FC<PeerProviderProps> = (props) => {
     const [state, setState] = useState({...DefaultPeerContext});
-    const {devices} = useContext(ButtplugContext);
 
     useEffect(() => {
         (async () => {
