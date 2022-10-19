@@ -1,11 +1,19 @@
+import { ButtplugContext } from "components/ButtplugContext";
 import { NextPage } from "next";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
 
 const Play: NextPage = () => {
+    const buttplugContext = useContext(ButtplugContext);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!buttplugContext.client?.Connected) {
+            router.push("/play/settings");
+        }
+    })
     return (
-        <Link href="/play/settings">
-            hi
-        </Link>
+        <>hi</>
     )
 }
 

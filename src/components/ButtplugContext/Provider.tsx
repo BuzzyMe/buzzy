@@ -17,6 +17,17 @@ export class ButtplugProvider extends Component<ButtplugProviderProps, ButtplugC
     componentDidMount(): void {
         buttplugInit().then(() => {
             const client = new ButtplugClient("Buzzy");
+            client.on("deviceadded", (e) => {
+                this.setState({
+                    devices: [...this.state.devices, e]
+                })
+            })
+            client.on("deviceremoved", (e) => {
+                const devices = [...this.state.devices]
+                this.setState({
+                    devices: devices.filter((d) => d.Index !== e.Index)
+                })
+            })
             this.setState({
                 client,
                 initialized: true

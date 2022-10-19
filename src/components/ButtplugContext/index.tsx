@@ -1,14 +1,16 @@
-import { ButtplugClient } from 'buttplug';
+import { ButtplugClient, ButtplugClientDevice } from 'buttplug';
 import { createContext } from 'react';
 import { ButtplugProvider } from './Provider';
 
 interface ButtplugContextState {
     client?: ButtplugClient,
-    initialized: boolean
+    initialized: boolean,
+    devices: ButtplugClientDevice[]
 }
 
 const DefaultButtplugContext: ButtplugContextState = {
-    initialized: false
+    initialized: false,
+    devices: []
 }
 
 const ButtplugContext = createContext<ButtplugContextState>(DefaultButtplugContext);
