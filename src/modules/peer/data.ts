@@ -1,21 +1,35 @@
-import { ButtplugClientDevice } from "buttplug";
+import { ButtplugClientDevice, ButtplugMessageSorter, MessageAttributes, RotationCmd, VectorCmd, VibrationCmd } from "buttplug";
+import useButtplugStore from "store/buttplug";
+import { JSONTools } from "./tools";
 
-export interface PeerMessage {
-    type: string
+export class PeerDevice extends ButtplugClientDevice {
+    static fromJSON(i: any) {
+        const _sorter = new ButtplugMessageSorter();
+        const e = new PeerDevice(
+            i._devicePtr, 
+            _sorter,
+            i._index,
+            i._name,
+            []
+        );
+        Object.assign(e, i)
+        return e;
+    }    
 }
-export interface DevicesPeerMessage extends PeerMessage {
+
+export interface DevicesPeerMessage {
     type: "devices",
     devices: ButtplugClientDevice[]
 }
+type PeerMessage = DevicesPeerMessage
 
-// export const PeerDevicesMessageOnData = (c: DataConnection, callback?: (d: DevicesPeerMessage) => void) => {
-//     c.on("data", (data) => {
-//         const d = data as DevicesPeerMessage;
-//         if (d.type === "devices") {
-//             console.log("setState")
-//             context.setDevices(context.devices.concat(d.devices))
-//             console.log(context.devices)
-//         }
-//         if (callback) callback(d);
-//     })
-// }
+export const PeerDevicesMessage = (data: PeerMessage) => {
+    const {devices, setDevices} = useButtplugStore.getState();
+    const new_devices = JSONTools.unstrip(data.devices);
+    const new_devices_names = new_devices.map(e => e.Name);
+    const instantiated_new_devices = new_devices.map(e => PeerDevice.fromJSON(e));
+    const filtered_devices = devices.filter(e => !new_devices_names.includes(e.Name));
+    console.log(new_devices)
+    setDevices([...filtered_devices, ...instantiated_new_devices])
+    // devices.findIndex(d)
+}
