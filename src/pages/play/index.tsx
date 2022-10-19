@@ -49,9 +49,13 @@ const Play: NextPage = () => {
             }
             <div className="card space-y-3">
                 <h1>Multiplayer</h1>
-                <div>
-                    Your ID:
-                </div>
+                {
+                    peer && (
+                        <div>
+                            Your ID: {peer.id}
+                        </div>
+                    )                    
+                }
                 <div className="flex justify-end gap-3">
                     {
                         !peer && <button className="action" onClick={initializePeer}>Enable Multiplayer</button>
