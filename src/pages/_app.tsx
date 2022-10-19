@@ -6,6 +6,7 @@ import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import { NextPageWithLayout } from "next";
 import MainLayout from "layout";
+import { ButtplugProvider } from "components/ButtplugContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,7 +15,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const getLayout = (Component as typeof Component & NextPageWithLayout).getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
   return (
     <SessionProvider session={session}>
-      {getLayout(<Component {...pageProps} />)}
+      <ButtplugProvider>
+        {getLayout(<Component {...pageProps} />)}
+      </ButtplugProvider>
     </SessionProvider>
   );
 };

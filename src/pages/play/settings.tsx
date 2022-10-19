@@ -2,7 +2,6 @@ import { NextPageWithLayout } from "next";
 import { useContext } from "react";
 import { ButtplugContext } from "components/ButtplugContext";
 import { ButtplugEmbeddedConnectorOptions } from "buttplug";
-import ButtplugLayout from "layout/buttplug";
 
 const Settings: NextPageWithLayout = () => {
     const buttplugContext = useContext(ButtplugContext);
@@ -26,12 +25,4 @@ const Settings: NextPageWithLayout = () => {
         <button onClick={embedded_connect}>hi</button>
     )
 }
-
-Settings.getLayout = (page) => {
-    return (
-        <ButtplugLayout>
-            {page}
-        </ButtplugLayout>
-    )
-};
 export default Settings;
