@@ -1,6 +1,9 @@
+import pwa from "next-pwa";
+
 // @ts-check
 import { env } from "./src/env/server.mjs";
 import transpileModules from "next-transpile-modules";
+
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -13,9 +16,13 @@ function defineNextConfig(config) {
   return config;
 }
 
-const withTM = transpileModules(['buttplug']);
 
-export default defineNextConfig(withTM({
+const withTM = transpileModules(['buttplug']);
+const withPWA = process.env.NODE_ENV === "production" ? pwa({
+  dest: 'public'
+}) : (e => e)
+
+export default defineNextConfig(withPWA(withTM({
   reactStrictMode: true,
   swcMinify: true,
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
@@ -27,4 +34,4 @@ export default defineNextConfig(withTM({
     config.experiments.syncWebAssembly = true;
     return config;
   }
-}));
+})));
