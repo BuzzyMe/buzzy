@@ -1,0 +1,16 @@
+.slider {
+    @apply h-2
+}
+
+.slider :global .rc-slider-track {
+    @apply bg-primary h-2
+}
+
+.slider :global .rc-slider-rail {
+    @apply bg-gray-300 h-2
+}
+
+.slider :global .rc-slider-handle {
+    transform: translateY(-11%) translateX(-50%) !important;
+    @apply bg-primary opacity-100 border-none h-6 w-6
+}
