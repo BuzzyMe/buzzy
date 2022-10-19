@@ -24,33 +24,12 @@ const Play: NextPage = () => {
     const [connectToPeerId, setConnectToPeerId] = useState("");
     const {peer, newPeerIfUndefined} = usePeerStore();
 
-    useEffect(() => {
-        const listeners: ((...a: any) => void)[] = [];
-        const connections: DataConnection[] = [];
-        const connection_list = (c: DataConnection) => { 
-            connections.push(c);
-            c.on("data", (d) => {
-                console.log(d)
-                c.send(JSON.parse(JSON.stringify(devices)))
-            })
-        }
-        listeners.push(connection_list);
-        peer?.on("connection", connection_list);
-        return () => {
-            for (const c of connections) {
-                c.removeAllListeners();
-            }
-            peer?.removeListener("connection", connection_list);
-        }
-    }, [])
     const connect = () => {
         const conn = peer?.connect(connectToPeerId);
         conn?.on('open', () => {
-            conn.send(devices)
+            conn.send(JSON.parse(JSON.stringify(devices)))
         })
         conn?.on('data', (d: any) => {
-            console.log("help")
-            setDevices([...devices, d])
             console.log(d)
         })
     }
