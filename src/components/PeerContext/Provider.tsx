@@ -1,7 +1,5 @@
-import { ButtplugContext } from "components/ButtplugContext";
-import { DevicesPeerMessage } from "modules/peer/data";
-import { Component, FC, ReactNode, useContext, useEffect, useState } from "react";
-import { DefaultPeerContext, PeerContext, PeerContextState } from ".";
+import { FC, useEffect, useState } from "react";
+import { DefaultPeerContext, PeerContext } from ".";
 
 interface PeerProviderProps {
     children: React.ReactNode

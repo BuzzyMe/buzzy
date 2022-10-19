@@ -1,10 +1,18 @@
 import { NextPage } from "next";
-import { useContext, useState } from "react";
-import { ButtplugContext } from "components/ButtplugContext";
+import { useEffect, useState } from "react";
 import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } from "buttplug";
+import useButtplugStore from "store/buttplug";
 
 const Settings: NextPage = () => {
-    const { client, devices } = useContext(ButtplugContext);
+    const { devices, client, newClientIfUndefined } = useButtplugStore();
+
+    useEffect(() => {
+        (async () => {
+            if (!client) {
+                await newClientIfUndefined();
+            }
+        })();
+    }, []);
 
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");

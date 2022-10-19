@@ -1,6 +1,4 @@
-import { ButtplugContext } from "components/ButtplugContext";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
 import { ButtplugDeviceMessageType } from "buttplug";
@@ -9,12 +7,19 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
 import { PeerContext } from "components/PeerContext";
-import { DevicesPeerMessage } from "modules/peer/data";
 import { DataConnection } from "peerjs";
-import { EventEmitter } from "stream";
+import useButtplugStore from "store/buttplug";
 
 const Play: NextPage = () => {
-    const { devices } = useContext(ButtplugContext);
+    const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
+
+    useEffect(() => {
+        (async () => {
+            if (!client) {
+                await newClientIfUndefined();
+            }
+        })();
+    }, []);
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
     const { initializePeer, peer } = useContext(PeerContext);
@@ -45,7 +50,7 @@ const Play: NextPage = () => {
         })
         conn?.on('data', (d: any) => {
             console.log("help")
-            devices.push(...d)
+            setDevices([...devices, d])
             console.log(d)
         })
     }

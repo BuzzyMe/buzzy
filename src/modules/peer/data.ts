@@ -1,6 +1,4 @@
 import { ButtplugClientDevice } from "buttplug";
-import { ButtplugContextState } from "components/ButtplugContext";
-import { DataConnection } from "peerjs";
 
 export interface PeerMessage {
     type: string
