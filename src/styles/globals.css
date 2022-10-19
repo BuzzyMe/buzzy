@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        scroll-behavior: smooth !important;
+    }
+
+    .auto-limit-w {
+        @apply mx-auto max-w-7xl px-3 sm:px-6 lg:px-8
+    }
+
+    .card {
+        @apply rounded-lg border-2 border-primary p-6 shadow
+    }
+    .card.hover {
+        @apply sm:border-gray-300 sm:hover:border-primary transition-all hover:shadow-2xl
+    }
+    .card > h1 {
+        @apply text-xl
+    }
+    .card > h2 {
+        @apply text-lg
+    }
+
+    .action {
+        @apply flex text-lg w-fit whitespace-nowrap items-center
+            gap-1 rounded-lg
+            text-primary hover:text-white hover:bg-primary
+            border-2 border-primary
+            active:translate-y-0.5
+            shadow hover:shadow-2xl active:shadow-inner
+            transition-all
+    }
+    .action.icon {
+        @apply px-3 pr-4
+    }
+}

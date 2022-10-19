@@ -1,3 +1,4 @@
+import Header from "components/Header";
 import { FC } from "react";
 
 interface MainLayoutProps {
@@ -7,6 +8,7 @@ interface MainLayoutProps {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     return (
         <>
+            <Header />
             {children}
         </>
     );

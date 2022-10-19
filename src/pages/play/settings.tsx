@@ -1,9 +1,9 @@
-import { NextPageWithLayout } from "next";
+import { NextPage } from "next";
 import { useContext } from "react";
 import { ButtplugContext } from "components/ButtplugContext";
 import { ButtplugEmbeddedConnectorOptions } from "buttplug";
 
-const Settings: NextPageWithLayout = () => {
+const Settings: NextPage = () => {
     const buttplugContext = useContext(ButtplugContext);
 
     const embedded_connect = async () => {
