@@ -18,9 +18,16 @@ function defineNextConfig(config) {
 
 
 const withTM = transpileModules(['buttplug']);
-const withPWA = process.env.NODE_ENV === "production" ? pwa({
-  dest: 'public'
-}) : (e => e)
+const withPWA = pwa({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  runtimeCaching: [
+    {
+      urlPattern: new RegExp('.*wasm'),
+      handler: 'NetworkFirst',
+    }
+  ]
+})
 
 export default defineNextConfig(withPWA(withTM({
   reactStrictMode: true,
