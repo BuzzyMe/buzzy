@@ -28,7 +28,7 @@ const Play: NextPage = () => {
                             <Slider onChange={(e) => d.vibrate(e as number / 100)} className={styles.slider} />
                         </div>
                         <div className="flex justify-end gap-3">
-                            <button className="action" onClick={d.stop}>Stop</button>
+                            <button className="action" onClick={() => d.stop()}>Stop</button>
                         </div>
                     </div>
                 ))
