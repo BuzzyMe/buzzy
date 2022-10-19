@@ -1,14 +1,14 @@
 import { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
 
 import { ButtplugDeviceMessageType } from "buttplug";
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
-import { PeerContext } from "components/PeerContext";
 import { DataConnection } from "peerjs";
 import useButtplugStore from "store/buttplug";
+import usePeerStore from "store/peer";
+import { useEffect, useState } from "react";
 
 const Play: NextPage = () => {
     const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
@@ -22,7 +22,7 @@ const Play: NextPage = () => {
     }, []);
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
-    const { initializePeer, peer } = useContext(PeerContext);
+    const {peer, newPeerIfUndefined} = usePeerStore();
 
     useEffect(() => {
         const listeners: ((...a: any) => void)[] = [];
@@ -96,7 +96,7 @@ const Play: NextPage = () => {
                 }
                 <div className="flex justify-end gap-3">
                     {
-                        !peer ? <button className="action" onClick={initializePeer}>Enable Multiplayer</button> :
+                        !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
                         <button className="action" onClick={connect}>Connect</button>
                     }
                 </div>
