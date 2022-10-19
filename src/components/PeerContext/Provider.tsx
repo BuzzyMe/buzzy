@@ -1,39 +1,74 @@
-import { Component, ReactNode } from "react";
+import { ButtplugContext } from "components/ButtplugContext";
+import { DevicesPeerMessage, PeerDevicesMessageOnData } from "modules/peer/data";
+import { Component, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { DefaultPeerContext, PeerContext, PeerContextState } from ".";
 
 interface PeerProviderProps {
     children: React.ReactNode
 }
 
-export class PeerProvider extends Component<PeerProviderProps, PeerContextState> {
-    constructor(props: PeerProviderProps) {
-        super(props)
-        this.state = {...DefaultPeerContext};
-    }
-    async componentDidMount() {
-        const { Peer } = await import('peerjs');
-        
-        const initializePeer = () => {
-            if (this.state.peer) return;
-            const peer = new Peer();
-            const events = ["open", "connection", "close"];
-            peer.on("open", (e) => this.setState({ peer }))
-            peer.on("connection", (e) => this.setState({ peer }))
-            peer.on("close", () => this.setState({ peer }))
-            this.setState({
-                peer
-            });
-        }
+export const PeerProvider: FC<PeerProviderProps> = (props) => {
+    const [state, setState] = useState({...DefaultPeerContext});
+    const bpContext = useContext(ButtplugContext);
+    const { devices } = bpContext;
 
-        this.setState({
-            initializePeer
-        })
-    }
-    render(): ReactNode {
-        return (
-            <PeerContext.Provider value={this.state}>
-                {this.props.children}
-            </PeerContext.Provider>
-        )
-    }
+    useEffect(() => {
+        (async () => {
+            const { Peer } = await import('peerjs');
+            const initializePeer = () => {
+                if (state.peer) return;
+                const peer = new Peer();
+                peer.on("open", () => setState({ initializePeer, peer }))
+                peer.on("connection", (c) => { 
+                    PeerDevicesMessageOnData(c, bpContext, () => c.send({ type: "devices", devices: JSON.parse(JSON.stringify(devices)) } as DevicesPeerMessage));
+                });
+                setState({
+                    peer,
+                    initializePeer
+                });
+            }
+
+            setState({
+                initializePeer
+            })
+        })();
+    }, []);
+    return (
+        <PeerContext.Provider value={state}>
+            {props.children}
+        </PeerContext.Provider>
+    )
 }
+
+// export class PeerProvider extends Component<PeerProviderProps, PeerContextState> {
+//     constructor(props: PeerProviderProps) {
+//         super(props)
+//         this.state = {...DefaultPeerContext};
+        
+//     }
+//     async componentDidMount() {
+//         const { Peer } = await import('peerjs');
+        
+//         const initializePeer = () => {
+//             if (this.state.peer) return;
+//             const peer = new Peer();
+//             peer.on("open", () => this.setState({ peer }))
+//             peer.on("close", () => this.setState({ peer }))
+//             peer.on("connection", () => this.setState({ peer }));
+//             this.setState({
+//                 peer
+//             });
+//         }
+
+//         this.setState({
+//             initializePeer
+//         })
+//     }
+//     render(): ReactNode {
+//         return (
+//             <PeerContext.Provider value={this.state}>
+//                 {this.props.children}
+//             </PeerContext.Provider>
+//         )
+//     }
+// }

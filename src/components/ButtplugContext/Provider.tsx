@@ -1,4 +1,4 @@
-import { ButtplugClient, buttplugInit } from "buttplug";
+import { ButtplugClient, ButtplugClientDevice, buttplugInit } from "buttplug";
 import React, { Component, ReactNode } from "react";
 import { ButtplugContext, ButtplugContextState, DefaultButtplugContext } from ".";
 
@@ -25,9 +25,14 @@ export class ButtplugProvider extends Component<ButtplugProviderProps, ButtplugC
                     devices: devices.filter((d) => d.Index !== e.Index)
                 })
             })
+            const setDevices = (devices: ButtplugClientDevice[]) => {
+                console.log("setState")
+                this.setState({devices})
+            }
             this.setState({
                 client,
-                initialized: true
+                initialized: true,
+                setDevices
             })
         })
     }

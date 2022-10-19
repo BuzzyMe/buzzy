@@ -9,9 +9,11 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
 import { PeerContext } from "components/PeerContext";
+import { DevicesPeerMessage, PeerDevicesMessageOnData } from "modules/peer/data";
 
 const Play: NextPage = () => {
-    const { devices } = useContext(ButtplugContext);
+    const bpContext = useContext(ButtplugContext);
+    const { devices } = bpContext;
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
     const { initializePeer, peer } = useContext(PeerContext);
@@ -19,8 +21,9 @@ const Play: NextPage = () => {
     const connect = () => {
         const conn = peer?.connect(connectToPeerId);
         conn?.on('open', () => {
-            console.log("hi")
+            conn.send({type:"devices", devices: JSON.parse(JSON.stringify(devices))} as DevicesPeerMessage)
         })
+        conn && PeerDevicesMessageOnData(conn, bpContext, () => { return; });
     }
     
     return (
@@ -35,7 +38,6 @@ const Play: NextPage = () => {
                             {
                                 (() => {
                                     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-                                    console.log(vibrate_attributes)
                                     return (
                                         vibrate_attributes && 
                                             <Slider onChange={(e) => d.vibrate(e as number / 100)} className={styles.slider} />
