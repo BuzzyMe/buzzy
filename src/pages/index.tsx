@@ -4,8 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 
 const Home: NextPage = () => {
-    const session = useSession();
-
     return (
         <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-16">
             <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
