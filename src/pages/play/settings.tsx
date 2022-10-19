@@ -71,10 +71,10 @@ const Settings: NextPage = () => {
                     </tbody>
                 </table>
                 {moreSettings && <input type="text" className="input w-full" placeholder="Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
-                <div className="flex justify-end gap-3">
-                    <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
+                <div className="flex justify-end gap-1 flex-wrap">
                     <button className="action" onClick={embedded_connect}>WebBluetooth</button>
                     <button className="action" onClick={external_connect}>External</button>
+                    <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                 </div>
             </div>
         </div>
