@@ -1,11 +1,7 @@
-import { NextPage, NextPageWithLayout } from "next";
-import { useContext } from "react";
-import { ButtplugContext, ButtplugProvider } from "components/ButtplugContext";
-import dynamic from "next/dynamic";
-import { ButtplugEmbeddedConnectorOptions } from "buttplug";
+import { NextPage } from "next";
 import Link from "next/link";
 
-const Play: NextPageWithLayout = () => {
+const Play: NextPage = () => {
     return (
         <Link href="/play/settings">
             hi

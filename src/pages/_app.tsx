@@ -7,6 +7,8 @@ import { trpc } from "../utils/trpc";
 import { NextPageWithLayout } from "next";
 import MainLayout from "layout";
 import { ButtplugProvider } from "components/ButtplugContext";
+import { ThemeProvider } from "next-themes";
+import ScrollHandler from "components/ScrollHandler";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,9 +17,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const getLayout = (Component as typeof Component & NextPageWithLayout).getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
   return (
     <SessionProvider session={session}>
-      <ButtplugProvider>
-        {getLayout(<Component {...pageProps} />)}
-      </ButtplugProvider>
+      <ThemeProvider attribute="class">
+        <ButtplugProvider>
+          <ScrollHandler />
+          {getLayout(<Component {...pageProps} />)}
+        </ButtplugProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };
