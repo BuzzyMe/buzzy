@@ -26,7 +26,8 @@ const withPWA = pwa({
       urlPattern: new RegExp('.*wasm'),
       handler: 'NetworkFirst',
     }
-  ]
+  ],
+  skipWaiting: true,
 })
 
 export default defineNextConfig(withPWA(withTM({
