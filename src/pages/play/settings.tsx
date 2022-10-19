@@ -40,6 +40,7 @@ const Settings: NextPage = () => {
             await client?.disconnect();
         }
     }
+
     return (
         <div className="pt-20 auto-limit-w flex flex-col">
             <div className="card space-y-3">
@@ -60,6 +61,7 @@ const Settings: NextPage = () => {
                             devices.length ? devices.map(d => (
                                 <tr className="border" key={d.Index}>
                                     <td>{d.Name}</td>
+                                    <td><button className="underline" onClick={() => d.emit("deviceremoved")}>Disconnect</button></td>
                                 </tr>
                             )) : 
                             <tr className="border">
