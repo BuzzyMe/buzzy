@@ -1,7 +1,7 @@
 import { ButtplugContext } from "components/ButtplugContext";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { ButtplugDeviceMessageType } from "buttplug";
 
@@ -11,12 +11,18 @@ import styles from 'styles/Slider.module.css';
 import { PeerContext } from "components/PeerContext";
 
 const Play: NextPage = () => {
-    const { client, devices } = useContext(ButtplugContext);
+    const { devices } = useContext(ButtplugContext);
 
+    const [connectToPeerId, setConnectToPeerId] = useState("");
     const { initializePeer, peer } = useContext(PeerContext);
-    
-    const router = useRouter();
 
+    const connect = () => {
+        const conn = peer?.connect(connectToPeerId);
+        conn?.on('open', () => {
+            console.log("hi")
+        })
+    }
+    
     return (
         <div className="auto-limit-w pt-20 space-y-3">
             {
@@ -51,14 +57,16 @@ const Play: NextPage = () => {
                 <h1>Multiplayer</h1>
                 {
                     peer && (
-                        <div>
+                        <div className="space-y-3">
                             Your ID: <pre className="inline">{peer.id ?? "Loading..."}</pre>
+                            <input className="input w-full" placeholder="Enter ID to Connect to" type="text" value={connectToPeerId} onChange={e => setConnectToPeerId(e.target.value)} />
                         </div>
                     )                    
                 }
                 <div className="flex justify-end gap-3">
                     {
-                        !peer && <button className="action" onClick={initializePeer}>Enable Multiplayer</button>
+                        !peer ? <button className="action" onClick={initializePeer}>Enable Multiplayer</button> :
+                        <button className="action" onClick={connect}>Connect</button>
                     }
                 </div>
             </div>

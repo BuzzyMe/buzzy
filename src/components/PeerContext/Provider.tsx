@@ -16,7 +16,10 @@ export class PeerProvider extends Component<PeerProviderProps, PeerContextState>
         const initializePeer = () => {
             if (this.state.peer) return;
             const peer = new Peer();
-            peer.on("open", () => this.setState({ peer }))
+            const events = ["open", "connection", "close"];
+            peer.on("open", (e) => this.setState({ peer }))
+            peer.on("connection", (e) => this.setState({ peer }))
+            peer.on("close", () => this.setState({ peer }))
             this.setState({
                 peer
             });
