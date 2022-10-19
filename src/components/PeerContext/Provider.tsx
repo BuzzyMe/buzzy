@@ -1,5 +1,5 @@
 import { ButtplugContext } from "components/ButtplugContext";
-import { DevicesPeerMessage, PeerDevicesMessageOnData } from "modules/peer/data";
+import { DevicesPeerMessage } from "modules/peer/data";
 import { Component, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { DefaultPeerContext, PeerContext, PeerContextState } from ".";
 
@@ -9,8 +9,7 @@ interface PeerProviderProps {
 
 export const PeerProvider: FC<PeerProviderProps> = (props) => {
     const [state, setState] = useState({...DefaultPeerContext});
-    const bpContext = useContext(ButtplugContext);
-    const { devices } = bpContext;
+    const {devices} = useContext(ButtplugContext);
 
     useEffect(() => {
         (async () => {
@@ -19,9 +18,7 @@ export const PeerProvider: FC<PeerProviderProps> = (props) => {
                 if (state.peer) return;
                 const peer = new Peer();
                 peer.on("open", () => setState({ initializePeer, peer }))
-                peer.on("connection", (c) => { 
-                    PeerDevicesMessageOnData(c, bpContext, () => c.send({ type: "devices", devices: JSON.parse(JSON.stringify(devices)) } as DevicesPeerMessage));
-                });
+                peer.on("connection", () => setState({ initializePeer, peer }))
                 setState({
                     peer,
                     initializePeer

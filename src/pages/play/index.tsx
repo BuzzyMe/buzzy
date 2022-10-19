@@ -9,21 +9,45 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
 import { PeerContext } from "components/PeerContext";
-import { DevicesPeerMessage, PeerDevicesMessageOnData } from "modules/peer/data";
+import { DevicesPeerMessage } from "modules/peer/data";
+import { DataConnection } from "peerjs";
+import { EventEmitter } from "stream";
 
 const Play: NextPage = () => {
-    const bpContext = useContext(ButtplugContext);
-    const { devices } = bpContext;
+    const { devices } = useContext(ButtplugContext);
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
     const { initializePeer, peer } = useContext(PeerContext);
 
+    useEffect(() => {
+        const listeners: ((...a: any) => void)[] = [];
+        const connections: DataConnection[] = [];
+        const connection_list = (c: DataConnection) => { 
+            connections.push(c);
+            c.on("data", (d) => {
+                console.log(d)
+                c.send(JSON.parse(JSON.stringify(devices)))
+            })
+        }
+        listeners.push(connection_list);
+        peer?.on("connection", connection_list);
+        return () => {
+            for (const c of connections) {
+                c.removeAllListeners();
+            }
+            peer?.removeListener("connection", connection_list);
+        }
+    }, [])
     const connect = () => {
         const conn = peer?.connect(connectToPeerId);
         conn?.on('open', () => {
-            conn.send({type:"devices", devices: JSON.parse(JSON.stringify(devices))} as DevicesPeerMessage)
+            conn.send(devices)
         })
-        conn && PeerDevicesMessageOnData(conn, bpContext, () => { return; });
+        conn?.on('data', (d: any) => {
+            console.log("help")
+            devices.push(...d)
+            console.log(d)
+        })
     }
     
     return (
