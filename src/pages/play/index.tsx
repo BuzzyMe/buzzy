@@ -8,16 +8,15 @@ import { ButtplugDeviceMessageType } from "buttplug";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from 'styles/Slider.module.css';
+import { PeerContext } from "components/PeerContext";
 
 const Play: NextPage = () => {
     const { client, devices } = useContext(ButtplugContext);
+
+    const { initializePeer, peer } = useContext(PeerContext);
+    
     const router = useRouter();
 
-    useEffect(() => {
-        if (!client?.Connected) {
-            router.push("/play/settings");
-        }
-    })
     return (
         <div className="auto-limit-w pt-20 space-y-3">
             {
@@ -48,6 +47,17 @@ const Play: NextPage = () => {
                     </div>
                 ))
             }
+            <div className="card space-y-3">
+                <h1>Multiplayer</h1>
+                <div>
+                    Your ID:
+                </div>
+                <div className="flex justify-end gap-3">
+                    {
+                        !peer && <button className="action" onClick={initializePeer}>Enable Multiplayer</button>
+                    }
+                </div>
+            </div>
         </div>
     )
 }

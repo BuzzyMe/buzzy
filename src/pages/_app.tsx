@@ -9,6 +9,7 @@ import MainLayout from "layout";
 import { ButtplugProvider } from "components/ButtplugContext";
 import { ThemeProvider } from "next-themes";
 import ScrollHandler from "components/ScrollHandler";
+import { PeerProvider } from "components/PeerContext/Provider";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -19,8 +20,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <ButtplugProvider>
-          <ScrollHandler />
-          {getLayout(<Component {...pageProps} />)}
+          <PeerProvider>
+            <ScrollHandler />
+            {getLayout(<Component {...pageProps} />)}
+          </PeerProvider>
         </ButtplugProvider>
       </ThemeProvider>
     </SessionProvider>
