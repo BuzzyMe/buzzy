@@ -52,7 +52,7 @@ const Play: NextPage = () => {
                 {
                     peer && (
                         <div>
-                            Your ID: {peer.id}
+                            Your ID: <pre className="inline">{peer.id ?? "Loading..."}</pre>
                         </div>
                     )                    
                 }

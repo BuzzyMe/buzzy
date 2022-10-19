@@ -3,7 +3,7 @@ import { Peer } from "peerjs";
 
 interface PeerContextState {
     peer?: Peer,
-    initializePeer: () => void
+    initializePeer: () => void,
 }
 
 const DefaultPeerContext: PeerContextState = {
