@@ -21,13 +21,7 @@ const withTM = transpileModules(['buttplug']);
 const withPWA = pwa({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
-  runtimeCaching: [
-    {
-      urlPattern: new RegExp('.*wasm'),
-      handler: 'NetworkFirst',
-    }
-  ],
-  skipWaiting: true,
+  maximumFileSizeToCacheInBytes: 5000000,
 })
 
 export default defineNextConfig(withPWA(withTM({
