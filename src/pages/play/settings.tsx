@@ -1,23 +1,43 @@
 import { NextPage } from "next";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ButtplugContext } from "components/ButtplugContext";
-import { ButtplugEmbeddedConnectorOptions } from "buttplug";
+import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } from "buttplug";
 
 const Settings: NextPage = () => {
     const { client, devices } = useContext(ButtplugContext);
 
-    const embedded_connect = async () => {
-        const opts = new ButtplugEmbeddedConnectorOptions();
+    const [ moreSettings, setMoreSettings ] = useState(false);
+    const [ serverUrl, setServerUrl ] = useState("");
+
+    const connect = async (opts: any) => {
         if (client?.Connected) {
             await client?.disconnect();
         }
         try {
             await client?.connect(opts);
-            await client?.startScanning();
         }
         catch (e) {
             console.log(e);
-            client?.disconnect();
+        }
+        return client;
+    }
+
+    const external_connect = async () => {
+        const opts = new ButtplugWebsocketConnectorOptions();
+        if (serverUrl.length) {
+            opts.Address = serverUrl;
+        }
+        connect(opts);
+    }
+
+    const embedded_connect = async () => {
+        const client = await connect(new ButtplugEmbeddedConnectorOptions());
+        try {
+            await client?.startScanning();
+        }
+        catch (e) {
+            console.log(e)
+            await client?.disconnect();
         }
     }
     return (
@@ -36,18 +56,23 @@ const Settings: NextPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            
-                            devices.map(d => (
+                        {   
+                            devices.length ? devices.map(d => (
                                 <tr className="border" key={d.Index}>
                                     <td>{d.Name}</td>
                                 </tr>
-                            ))
+                            )) : 
+                            <tr className="border">
+                                <td colSpan={2}>No Devices Connected</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
-                <div className="flex justify-end">
+                {moreSettings && <input type="text" className="input w-full" placeholder="Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
+                <div className="flex justify-end gap-3">
+                    <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                     <button className="action" onClick={embedded_connect}>WebBluetooth</button>
+                    <button className="action" onClick={external_connect}>External</button>
                 </div>
             </div>
         </div>
