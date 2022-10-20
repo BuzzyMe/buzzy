@@ -24,6 +24,9 @@
         @apply text-lg
     }
 
+    .action-container {
+        @apply flex justify-end gap-1 sm:gap-3
+    }
     .action {
         @apply flex sm:text-lg w-fit whitespace-nowrap items-center
             px-3 gap-1 rounded-lg

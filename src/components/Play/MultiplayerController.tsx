@@ -53,7 +53,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
                 )                    
             }
             </div>
-            <div className="flex justify-end gap-3">
+            <div className="action-container">
                 {
                     !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
                     <>

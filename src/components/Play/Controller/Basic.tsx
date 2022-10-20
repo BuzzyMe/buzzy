@@ -36,7 +36,7 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                     ))
                 }
             </>
-            <div className="flex justify-end gap-3">
+            <div className="action-container">
                 {
                     d.messageAttributes(ButtplugDeviceMessageType.StopDeviceCmd) && 
                     <button className="action" onClick={() => d.stop()}>Stop</button>

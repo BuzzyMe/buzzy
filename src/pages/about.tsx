@@ -13,7 +13,7 @@ const About: NextPage = () => {
                     - Lower latency as clients are streaming directly to each other. <br/>
                     - Compatiblity with over 190 adult toy models. <br/>
                 </div>
-                <div className="flex justify-end gap-3">
+                <div className="action-container">
                     <Link href="https://github.com/jy1263/buzzy-next">
                         <a className="action">
                             Source Code
