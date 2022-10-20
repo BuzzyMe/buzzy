@@ -16,10 +16,10 @@ const usePeerStore = create<PeerStoreState>((set, get) => ({
         if (get().peer) return;
         const { Peer } = await import('peerjs');
         const peer = new Peer();
-        const { devices } = useButtplugStore.getState();
         peer?.on("connection", (c) => {
             c.on("data", (d) => {
                 OnPeerDevicesMessage(d as PeerDevicesMessage, c);
+                const { devices } = useButtplugStore.getState();
                 c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
             })
         })
