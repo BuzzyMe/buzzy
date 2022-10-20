@@ -62,7 +62,7 @@ const Play: NextPage = () => {
             <div className="card space-y-3">
                 <h1>Multiplayer (WIP!)</h1>
                 <div className="space-y-3">
-                Make sure to connect all your devices first before inviting someone!
+                Make sure to connect all your devices first before inviting someone! <br />
                 {
                     peer && (
                         <>
