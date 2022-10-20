@@ -71,14 +71,17 @@ export const getDevicePtr = (device: PeerDevice | ButtplugClientDevice) => {
 }
 
 export const OnPeerDevicesMessage = (data: PeerDevicesMessage, c: DataConnection) => {
-    const {devices, setDevices} = useButtplugStore.getState();
+    const {devices} = useButtplugStore.getState();
     const devices_ptrs = devices.map(e => getDevicePtr(e));
     
     const new_devices = JSONTools.unstrip(data.devices);
     const filtered_new_devices = new_devices.filter(e => !devices_ptrs.includes(getDevicePtr(e)));
     const instantiated_new_devices = filtered_new_devices.map(e => PeerDevice.fromJSONWithConnection(e, c));
 
-    setDevices([...devices, ...instantiated_new_devices])
-    // devices.findIndex(d)
+    console.log([...devices, ...instantiated_new_devices])
+
+    useButtplugStore.setState({
+        devices: [...devices, ...instantiated_new_devices]
+    })
 }
 
