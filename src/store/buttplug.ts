@@ -12,8 +12,10 @@ interface ButtplugState {
 const useButtplugStore = create<ButtplugState>((set, get) => ({
     client: undefined,
     newClientIfUndefined: async () => {
+        const get_client = get().client;
+        if (get_client) return;
         await buttplugInit();
-        get().client ?? set((state) => {
+        get_client ?? set((state) => {
             const client = new ButtplugClient("buzzy");
             client.on("deviceadded", (e) => {
                 set((state) => ({...state, devices: [...state.devices, e]}))
