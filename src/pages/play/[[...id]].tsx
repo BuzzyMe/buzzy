@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { NextPage, NextPageWithLayout } from "next";
 
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
@@ -9,21 +9,15 @@ import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
 import { useRouter } from "next/router";
 import MultiplayerController from "components/Play/MultiplayerController";
+import MainLayout from "layout";
+import ButtplugLayout from "layout/buttplug";
 
-const Play: NextPage = () => {
+const Play: NextPageWithLayout = () => {
 
-    const { devices, client, newClientIfUndefined } = useButtplugStore();
+    const { devices } = useButtplugStore();
 
     const router = useRouter();
     const propConnectId = typeof router.query.id === "object" ? router.query.id[0] : undefined;
-
-    useEffect(() => {
-        (async () => {
-            if (!client) {
-                await newClientIfUndefined();
-            }
-        })();
-    }, []);
 
     return (
         <div className="auto-limit-w pt-20 space-y-3">
@@ -42,5 +36,15 @@ const Play: NextPage = () => {
         </div>
     )
 }
+
+Play.getLayout = (page) => {
+    return (
+        <MainLayout>
+            <ButtplugLayout>
+                {page}
+            </ButtplugLayout>
+        </MainLayout>
+    )
+};
 
 export default Play;

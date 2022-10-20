@@ -1,18 +1,12 @@
-import { NextPage } from "next";
+import { NextPage, NextPageWithLayout } from "next";
 import { useEffect, useState } from "react";
 import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } from "buttplug";
 import useButtplugStore from "store/buttplug";
+import MainLayout from "layout";
+import ButtplugLayout from "layout/buttplug";
 
-const Settings: NextPage = () => {
-    const { devices, client, newClientIfUndefined } = useButtplugStore();
-
-    useEffect(() => {
-        (async () => {
-            if (!client) {
-                await newClientIfUndefined();
-            }
-        })();
-    }, []);
+const Settings: NextPageWithLayout = () => {
+    const { devices, client } = useButtplugStore();
 
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");
@@ -88,4 +82,15 @@ const Settings: NextPage = () => {
         </div>
     )
 }
+
+Settings.getLayout = (page) => {
+    return (
+        <MainLayout>
+            <ButtplugLayout>
+                {page}
+            </ButtplugLayout>
+        </MainLayout>
+    )
+};
+
 export default Settings;
