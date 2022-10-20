@@ -1,16 +1,11 @@
 import { NextPage } from "next";
 
-import { ButtplugDeviceMessageType } from "buttplug";
-
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-import styles from 'styles/Slider.module.css';
-import { DataConnection } from "peerjs";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
 import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
 import { DevicesPeerMessage } from "modules/peer/data";
+import BasicController from "components/Play/BasicController";
 
 const Play: NextPage = () => {
     const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
@@ -40,29 +35,7 @@ const Play: NextPage = () => {
         <div className="auto-limit-w pt-20 space-y-3">
             {
                 devices.map((d) => (
-                    <div className="card space-y-3" key={d.Index}>
-                        <h1>
-                           {d.Name} 
-                        </h1>
-                        <div className="pb-2">
-                            {
-                                (() => {
-                                    const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-                                    return (
-                                        vibrate_attributes && 
-                                            <Slider onChange={(e) => d.vibrate(e as number / 100)} className={styles.slider} />
-                                            
-                                    )
-                                })()                  
-                            }
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            {
-                                d.messageAttributes(ButtplugDeviceMessageType.StopDeviceCmd) && 
-                                <button className="action" onClick={() => d.stop()}>Stop</button>
-                            }
-                        </div>
-                    </div>
+                    <BasicController key={d.Index} device={d} />
                 ))
             }
             <div className="card space-y-3">
