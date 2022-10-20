@@ -17,7 +17,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
 
-    const connect = async (id: string, peerInstance?: Peer) => {
+    const connect = (id: string, peerInstance?: Peer) => {
         const p = peerInstance ?? peer;
         const conn = p?.connect(id);
         
@@ -28,17 +28,15 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
     }
 
     useEffect(() => {
-        (async () => {
-            if (defaultId) {
-                const p = newPeerIfUndefined();
-                if (p) {
-                    p.once("open", () => {
-                        setConnectToPeerId(defaultId);
-                        connect(defaultId, p);  
-                    })
-                }
+        if (defaultId) {
+            const p = newPeerIfUndefined();
+            if (p) {
+                p.once("open", () => {
+                    setConnectToPeerId(defaultId);
+                    connect(defaultId, p);  
+                })
             }
-        })()
+        }
     }, [defaultId])
     
     return (
