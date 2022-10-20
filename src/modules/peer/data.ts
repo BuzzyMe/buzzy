@@ -2,7 +2,6 @@ import { ButtplugClientDevice, ButtplugMessageSorter, MessageAttributes, Rotatio
 import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import { DataConnection } from "peerjs";
 import useButtplugStore from "store/buttplug";
-import usePeerStore from "store/peer";
 import { PeerCmdMessage, PeerDevicesMessage } from "./message";
 import { JSONTools } from "./tools";
 
@@ -10,14 +9,13 @@ export class PeerDevice extends ButtplugClientDevice {
     connection?: DataConnection;
 
     async vibrate(...a: any): Promise<void> {
-        console.log(a)
-        this.connection?.send({ type: "method", method: "vibrate", params: a } as PeerCmdMessage)
+        this.connection?.send({ type: "method", method: "vibrate", params: a } as PeerCmdMessage);
     }
-    rotate(speeds: number | RotationCmd[], clockwise: boolean | undefined): Promise<void> {
-        throw new Error("Method not implemented.");
+    async rotate(...a: any): Promise<void> {
+        this.connection?.send({ type: "method", method: "rotate", params: a } as PeerCmdMessage);
     }
-    linear(position: number | VectorCmd[], duration: number | undefined): Promise<void> {
-        throw new Error("Method not implemented.");
+    async linear(...a: any): Promise<void> {
+        this.connection?.send({ type: "method", method: "linear", params: a } as PeerCmdMessage);
     }
     batteryLevel(): Promise<number> {
         throw new Error("Method not implemented.");
@@ -37,8 +35,8 @@ export class PeerDevice extends ButtplugClientDevice {
     rawUnsubscribe(endpoint: Buttplug.Endpoint): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    stop(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async stop(): Promise<void> {
+        this.connection?.send({ type: "method", method: "stop" } as PeerCmdMessage);
     }
     static fromJSON(i: any) {
         const input = {...i};
