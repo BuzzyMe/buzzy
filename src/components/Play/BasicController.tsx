@@ -25,8 +25,8 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                                 onChange={(v) => {
                                     const new_vib_states = [...vibrateStates];
                                     new_vib_states[i] = v as number / 100;
-                                    setVibrateStates(new_vib_states);
                                     d.vibrate(new_vib_states);
+                                    setVibrateStates(new_vib_states);
                                 }} 
                                 className={styles.slider} 
                             />
