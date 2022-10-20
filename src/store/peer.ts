@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { handler } from "modules/peer/handler";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
@@ -7,14 +9,18 @@ import useButtplugStore from "./buttplug";
 
 export interface PeerStoreState {
     peer?: TPeer,
-    newPeerIfUndefined: () => Promise<TPeer | undefined>
+    newPeerIfUndefined: () => TPeer | undefined
 }
 
-const usePeerStore = create<PeerStoreState>((set, get) => ({
+const usePeerStore = create<PeerStoreState>((set, get) => {
+    return {
     peer: undefined,
-    newPeerIfUndefined: async () => {
+    newPeerIfUndefined: () => {
         if (get().peer) return get().peer;
-        const { Peer } = await import('peerjs');
+        
+        const importedPeer: any = require('peerjs');
+        const Peer: typeof TPeer = importedPeer.Peer;
+
         const peer = new Peer();
         peer?.on("connection", (c) => {
             c.on("data", (data) => {
@@ -30,6 +36,7 @@ const usePeerStore = create<PeerStoreState>((set, get) => ({
         set(() => ({peer}));
         return get().peer;
     }
-}));
+}
+});
 
 export default usePeerStore
