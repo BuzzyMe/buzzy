@@ -45,9 +45,9 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
             if (defaultId) {
                 const p = await newPeerIfUndefined();
                 if (p && client) {
-                    console.log("hi");
                     const on = await new Promise((resolve) => {
                         const on = async () => {
+                            setConnectToPeerId(defaultId);
                             await connect(defaultId);
                             resolve(on);
                         };
