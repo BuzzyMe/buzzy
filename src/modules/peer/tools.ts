@@ -1,5 +1,8 @@
 export const MapTools = {
     replacer: (key: string, value: unknown) => {
+        if (key === "connection") {
+            return;
+        }
         if(value instanceof Map) {
             return {
                 dataType: 'Map',
@@ -22,6 +25,7 @@ export const MapTools = {
 
 export const JSONTools = {
     strip: <T,>(i: T) => {
+        console.log(i);
         return JSON.parse(JSON.stringify(i, MapTools.replacer)) as T;
     },
     unstrip: <T,>(i: T) => {
