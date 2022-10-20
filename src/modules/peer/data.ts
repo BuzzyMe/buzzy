@@ -3,13 +3,14 @@ import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import { DataConnection } from "peerjs";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
-import { PeerCmdMessage, PeerDevicesMessage, VibrateCmdMessage } from "./message";
+import { PeerCmdMessage, PeerDevicesMessage } from "./message";
 import { JSONTools } from "./tools";
 
 export class PeerDevice extends ButtplugClientDevice {
     connection?: DataConnection;
 
     async vibrate(...a: any): Promise<void> {
+        console.log(a)
         this.connection?.send({ type: "method", method: "vibrate", params: a } as PeerCmdMessage)
     }
     rotate(speeds: number | RotationCmd[], clockwise: boolean | undefined): Promise<void> {
