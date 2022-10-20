@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
+import { handler } from "modules/peer/handler";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
 import { useRouter } from "next/router";
@@ -23,21 +24,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
         conn?.on('open', () => {
             conn.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
         })
-        conn?.on('data', (data) => {
-            const d = data as PeerMessage;
-            if (d.type === "devices") {
-                OnPeerDevicesMessage(d, conn);
-                return;
-            }
-            if (d.type === "method") {
-                const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
-                if (device_index !== -1) {
-                    const args: unknown[] = (d as any).params || [];
-                    (devices[device_index] as any)[d.method](...args);
-                }
-                return;
-            }
-        })
+        conn && handler(conn);
     }
 
     useEffect(() => {
