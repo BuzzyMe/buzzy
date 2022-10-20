@@ -64,11 +64,12 @@ export class PeerDevice extends ButtplugClientDevice {
 
 export const OnPeerDevicesMessage = (data: PeerDevicesMessage, c: DataConnection) => {
     const {devices, setDevices} = useButtplugStore.getState();
+    const devices_ptrs = devices.map(e => (e as any)._devicePtr);
+    
     const new_devices = JSONTools.unstrip(data.devices);
-    const new_devices_names = new_devices.map(e => e.Name);
-    const instantiated_new_devices = new_devices.map(e => PeerDevice.fromJSONWithConnection(e, c));
-    const filtered_devices = devices.filter(e => !new_devices_names.includes(e.Name));
-    console.log(new_devices)
-    setDevices([...filtered_devices, ...instantiated_new_devices])
+    const filtered_new_devices = new_devices.filter(e => !devices_ptrs.includes((e as any)._devicePtr));
+    const instantiated_new_devices = filtered_new_devices.map(e => PeerDevice.fromJSONWithConnection(e, c));
+
+    setDevices([...devices, ...instantiated_new_devices])
     // devices.findIndex(d)
 }
