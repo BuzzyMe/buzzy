@@ -3,7 +3,7 @@ import create from "zustand";
 
 interface ButtplugState {
     client?: ButtplugClient,
-    newClientIfUndefined: () => void;
+    newClientIfUndefined: () => Promise<void>;
     initialized: boolean,
     devices: ButtplugClientDevice[],
     setDevices: (devices: ButtplugClientDevice[]) => void;

@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
 
-const MultiplayerController: FC = () => {
+interface MultiplayerControllerProps {
+    defaultId?: string
+}
+
+const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) => {
     const { peer, newPeerIfUndefined } = usePeerStore();
-    const { devices } = useButtplugStore();
-    
-    const router = useRouter();
-    const propConnectId = typeof router.query.id === "object" ? router.query.id[0] : undefined;
+    const { devices, client } = useButtplugStore();
 
-    const [connectToPeerId, setConnectToPeerId] = useState(propConnectId ?? "");
+    const [connectToPeerId, setConnectToPeerId] = useState("");
 
-    const connect = () => {
-        const conn = peer?.connect(connectToPeerId);
+    const connect = async (id: string) => {
+        const conn = peer?.connect(id);
+        
         conn?.on('open', () => {
             conn.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
         })
@@ -29,15 +32,34 @@ const MultiplayerController: FC = () => {
             if (d.type === "method") {
                 const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
                 if (device_index !== -1) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const args: unknown[] = (d as any).params || [];
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (devices[device_index] as any)[d.method](...args);
                 }
                 return;
             }
         })
     }
+
+    useEffect(() => {
+        (async () => {
+            if (defaultId) {
+                const p = await newPeerIfUndefined();
+                if (p && client) {
+                    console.log("hi");
+                    const on = await new Promise((resolve) => {
+                        const on = async () => {
+                            await connect(defaultId);
+                            resolve(on);
+                        };
+                        p.on("open", on);
+                    });
+                    return () => {
+                        p.removeListener("open", on as any);
+                    }
+                }
+            }
+        })()
+    }, [defaultId, client])
     
     return (
         <div className="card space-y-3">
@@ -56,7 +78,7 @@ const MultiplayerController: FC = () => {
             <div className="flex justify-end gap-3">
                 {
                     !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
-                    <button className="action" onClick={connect}>Connect</button>
+                    <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
                 }
             </div>
         </div>

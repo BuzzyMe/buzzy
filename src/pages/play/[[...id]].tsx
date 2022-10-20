@@ -14,6 +14,9 @@ const Play: NextPage = () => {
 
     const { devices, client, newClientIfUndefined } = useButtplugStore();
 
+    const router = useRouter();
+    const propConnectId = typeof router.query.id === "object" ? router.query.id[0] : undefined;
+
     useEffect(() => {
         (async () => {
             if (!client) {
@@ -35,7 +38,7 @@ const Play: NextPage = () => {
                     </div>
                 </div>
             }
-            <MultiplayerController />
+            <MultiplayerController defaultId={propConnectId} />
         </div>
     )
 }
