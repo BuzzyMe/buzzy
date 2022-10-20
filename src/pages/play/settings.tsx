@@ -17,7 +17,7 @@ const Settings: NextPage = () => {
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");
 
-    const connect = async (opts: any) => {
+    const connect = async (opts: ButtplugWebsocketConnectorOptions | ButtplugEmbeddedConnectorOptions) => {
         if (client?.Connected) {
             await client?.disconnect();
         }

@@ -5,11 +5,11 @@ import usePeerStore from "store/peer";
 import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
 import BasicController from "components/Play/BasicController";
-import { PeerCmdMessage, PeerDevicesMessage, PeerMessage } from "modules/peer/message";
-import { OnPeerDevicesMessage } from "modules/peer/data";
+import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
+import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
 
 const Play: NextPage = () => {
-    const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
+    const { devices, client, newClientIfUndefined } = useButtplugStore();
 
     useEffect(() => {
         (async () => {
@@ -34,9 +34,12 @@ const Play: NextPage = () => {
                 return;
             }
             if (d.type === "method") {
-                if (devices[0]) {
+                const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
+                if (device_index !== -1) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const args: unknown[] = (d as any).params || [];
-                    devices[0][d.method](...args);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (devices[device_index] as any)[d.method](...args);
                 }
                 return;
             }

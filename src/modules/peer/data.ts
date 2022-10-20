@@ -1,4 +1,5 @@
-import { ButtplugClientDevice, ButtplugMessageSorter, MessageAttributes, RotationCmd, VectorCmd, VibrationCmd } from "buttplug";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ButtplugClientDevice, ButtplugMessageSorter } from "buttplug";
 import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import { DataConnection } from "peerjs";
 import useButtplugStore from "store/buttplug";

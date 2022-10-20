@@ -1,5 +1,5 @@
 export const MapTools = {
-    replacer: (key: string, value: any) => {
+    replacer: (key: string, value: unknown) => {
         if(value instanceof Map) {
             return {
                 dataType: 'Map',
@@ -9,10 +9,11 @@ export const MapTools = {
             return value;
         }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviver: (key: string, value: any) => {
         if(typeof value === 'object' && value !== null) {
             if (value.dataType === 'Map') {
-            return new Map(value.value);
+                return new Map(value.value);
             }
         }
         return value;
