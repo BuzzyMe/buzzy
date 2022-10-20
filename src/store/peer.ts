@@ -1,4 +1,5 @@
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
+import { handler } from "modules/peer/handler";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
 import Peer, { Peer as TPeer } from "peerjs";
@@ -21,20 +22,10 @@ const usePeerStore = create<PeerStoreState>((set, get) => ({
                 const d = data as PeerMessage;
                 const { devices } = useButtplugStore.getState();
                 if (d.type === "devices") {
-                    OnPeerDevicesMessage(d as PeerDevicesMessage, c);
                     c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
                 }
-                if (d.type === "method") {
-                    const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
-                    if (device_index !== -1) {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        const args: unknown[] = (d as any).params || [];
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (devices[device_index] as any)[d.method](...args);
-                    }
-                    return;
-                }
             })
+            handler(c);
         })
         peer.on("open", () => set((state) => ({peer: state.peer})));
         set(() => ({peer}));

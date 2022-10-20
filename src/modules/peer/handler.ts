@@ -6,6 +6,7 @@ import { PeerMessage } from "./message";
 
 export const handler = (conn: DataConnection) => {
     conn.on('data', (data) => {
+        console.log("hi")
         const d = data as PeerMessage;
         if (d.type === "devices") {
             OnPeerDevicesMessage(d, conn);
