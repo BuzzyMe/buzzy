@@ -61,14 +61,17 @@ const Play: NextPage = () => {
             }
             <div className="card space-y-3">
                 <h1>Multiplayer (WIP!)</h1>
+                <div className="space-y-3">
+                Make sure to connect all your devices first before inviting someone!
                 {
                     peer && (
-                        <div className="space-y-3">
+                        <>
                             Your ID: <pre className="inline">{peer.id ?? "Loading..."}</pre>
                             <input className="input w-full" placeholder="Enter ID to Connect to" type="text" value={connectToPeerId} onChange={e => setConnectToPeerId(e.target.value)} />
-                        </div>
+                        </>
                     )                    
                 }
+                </div>
                 <div className="flex justify-end gap-3">
                     {
                         !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
