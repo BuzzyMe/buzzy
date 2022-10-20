@@ -4,7 +4,7 @@ import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
 import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
-import BasicController from "components/Play/BasicController";
+import BasicController from "components/Play/Controller/Basic";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
 import { useRouter } from "next/router";
