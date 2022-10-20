@@ -78,7 +78,10 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
             <div className="flex justify-end gap-3">
                 {
                     !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
-                    <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
+                    <>
+                        <button className="action" onClick={() => navigator.clipboard.writeText(window.location.origin + "/play/" + peer.id)}>Copy Invite URL</button>
+                        <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
+                    </>
                 }
             </div>
         </div>
