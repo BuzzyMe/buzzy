@@ -2,9 +2,7 @@
 import { ButtplugClientDevice, ButtplugMessageSorter } from "buttplug";
 import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import { DataConnection } from "peerjs";
-import useButtplugStore from "store/buttplug";
-import { PeerCmdMessage, PeerDevicesMessage } from "./message";
-import { JSONTools } from "./tools";
+import { PeerCmdMessage } from "./message";
 
 export class PeerDevice extends ButtplugClientDevice {
     connection?: DataConnection;
