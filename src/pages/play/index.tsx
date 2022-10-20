@@ -49,9 +49,15 @@ const Play: NextPage = () => {
     return (
         <div className="auto-limit-w pt-20 space-y-3">
             {
-                devices.map((d) => (
+                devices.length ? devices.map((d) => (
                     <BasicController key={d.Index} device={d} />
-                ))
+                )) :
+                <div className="card space-y-3">
+                    <h1>No Devices Connected!</h1>
+                    <div>
+                        Either connect to a multiplayer session or click on settings to setup a local device...
+                    </div>
+                </div>
             }
             <div className="card space-y-3">
                 <h1>Multiplayer (Not Working Yet!)</h1>
