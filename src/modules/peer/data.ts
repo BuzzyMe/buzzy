@@ -8,14 +8,19 @@ import { JSONTools } from "./tools";
 export class PeerDevice extends ButtplugClientDevice {
     connection?: DataConnection;
 
+    sendCommand(method: string, params?: any[]) {
+        const message = { type: "method", method: method, devicePtr: getDevicePtr(this) } as PeerCmdMessage;
+        if (params) message.params = params;
+        this.connection?.send(message);
+    }
     async vibrate(...a: any): Promise<void> {
-        this.connection?.send({ type: "method", method: "vibrate", params: a } as PeerCmdMessage);
+        this.sendCommand("vibrate", a);
     }
     async rotate(...a: any): Promise<void> {
-        this.connection?.send({ type: "method", method: "rotate", params: a } as PeerCmdMessage);
+        this.sendCommand("rotate", a);
     }
     async linear(...a: any): Promise<void> {
-        this.connection?.send({ type: "method", method: "linear", params: a } as PeerCmdMessage);
+        this.sendCommand("linear", a);
     }
     batteryLevel(): Promise<number> {
         throw new Error("Method not implemented.");
@@ -36,7 +41,7 @@ export class PeerDevice extends ButtplugClientDevice {
         throw new Error("Method not implemented.");
     }
     async stop(): Promise<void> {
-        this.connection?.send({ type: "method", method: "stop" } as PeerCmdMessage);
+        this.sendCommand("stop");
     }
     static fromJSON(i: any) {
         const input = {...i};
@@ -60,7 +65,7 @@ export class PeerDevice extends ButtplugClientDevice {
     }
 }
 
-const getDevicePtr = (device: PeerDevice | ButtplugClientDevice) => {
+export const getDevicePtr = (device: PeerDevice | ButtplugClientDevice) => {
     return (device as any)._devicePtr as number;
 }
 

@@ -40,14 +40,17 @@ interface StopCmdMessage {
 export type PeerCmdMessage = {
     type: "method";
     method: string;
-    params?: any[];
+    params?: unknown[];
+    devicePtr: number;
 } 
-& VibrateCmdMessage
-| RotateCmdMessage
-| LinearCmdMessage
-| BatteryLevelCmdMessage
-| RssiLevelCmdMessage
-| RawReadCmdMessage
-| StopCmdMessage
+& (
+    VibrateCmdMessage
+    | RotateCmdMessage
+    | LinearCmdMessage
+    | BatteryLevelCmdMessage
+    | RssiLevelCmdMessage
+    | RawReadCmdMessage
+    | StopCmdMessage
+)
 
 export type PeerMessage = PeerDevicesMessage | PeerCmdMessage
