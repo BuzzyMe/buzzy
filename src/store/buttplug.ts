@@ -3,7 +3,7 @@ import create from "zustand";
 
 interface ButtplugState {
     client?: ButtplugClient,
-    newClientIfUndefined: () => Promise<void>;
+    newClientIfUndefined: () => Promise<ButtplugClient | undefined>;
     initialized: boolean,
     devices: ButtplugClientDevice[],
     setDevices: (devices: ButtplugClientDevice[]) => void;
@@ -13,7 +13,7 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
     client: undefined,
     newClientIfUndefined: async () => {
         const get_client = get().client;
-        if (get_client) return;
+        if (get_client) return get_client;
         await buttplugInit();
         get_client ?? set((state) => {
             const client = new ButtplugClient("buzzy");
@@ -25,6 +25,7 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
             })
             return {...state, client, initialized: true};
         })
+        return get().client;
     },
     initialized: false,
     devices: [],
