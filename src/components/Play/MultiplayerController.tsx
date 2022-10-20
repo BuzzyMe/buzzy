@@ -42,7 +42,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
 
     useEffect(() => {
         (async () => {
-            if (defaultId) {
+            if (defaultId && connectToPeerId === "") {
                 const p = await newPeerIfUndefined();
                 if (p && client) {
                     const on = await new Promise((resolve) => {
