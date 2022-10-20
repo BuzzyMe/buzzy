@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
 import BasicController from "components/Play/BasicController";
 import { PeerCmdMessage, PeerDevicesMessage, PeerMessage } from "modules/peer/message";
+import { OnPeerDevicesMessage } from "modules/peer/data";
 
 const Play: NextPage = () => {
     const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
@@ -28,12 +29,16 @@ const Play: NextPage = () => {
         })
         conn?.on('data', (data) => {
             const d = data as PeerMessage;
-            console.log(d)
+            if (d.type === "devices") {
+                OnPeerDevicesMessage(d, conn);
+                return;
+            }
             if (d.type === "method") {
                 if (devices[0]) {
                     const args: any[] = (d as any).params || [];
                     devices[0][d.method](...args);
                 }
+                return;
             }
         })
     }
