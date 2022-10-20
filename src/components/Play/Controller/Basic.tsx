@@ -12,8 +12,6 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
     
-    console.log(vibrateStates)
-
     return (
         <div className="card space-y-3" key={d.Index}>
             <h1>
