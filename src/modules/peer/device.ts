@@ -10,14 +10,6 @@ export class PeerDevice extends ButtplugClientDevice {
     connectionId?: string;
     peerId?: string;
 
-    sendCommand(method: string, params?: any[]) {
-        const message = { type: "method", method: method, devicePtr: getDevicePtr(this) } as PeerCmdMessage;
-        if (params) message.params = params;
-        const { peer } = usePeerStore.getState();
-        if (this.peerId && this.connectionId && peer) {
-            (peer.getConnection(this.peerId, this.connectionId) as DataConnection).send(message)
-        }
-    }
     async vibrate(...a: any): Promise<void> {
         this.sendCommand("vibrate", a);
     }
@@ -47,6 +39,15 @@ export class PeerDevice extends ButtplugClientDevice {
     }
     async stop(): Promise<void> {
         this.sendCommand("stop");
+    }
+
+    sendCommand(method: string, params?: any[]) {
+        const message = { type: "method", method: method, devicePtr: getDevicePtr(this) } as PeerCmdMessage;
+        if (params) message.params = params;
+        const { peer } = usePeerStore.getState();
+        if (this.peerId && this.connectionId && peer) {
+            (peer.getConnection(this.peerId, this.connectionId) as DataConnection).send(message)
+        }
     }
     static fromJSON(i: any) {
         const input = {...i};
