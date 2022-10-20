@@ -9,7 +9,7 @@ export const routes: Route[] = [
     },
     {
         name: "Play",
-        href: "/play",
+        href: "/play/[[...id]]",
     },
     {
         name: "Settings",

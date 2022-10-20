@@ -11,7 +11,7 @@ const Header: FC = () => {
     const router = useRouter();
     let current_route = undefined as Route | undefined;
     const navigation = routes.map(e => { 
-        e.current = e.href == router.asPath;
+        e.current = e.href == router.pathname;
         if (e.current) current_route = e;
         return e;
     });
