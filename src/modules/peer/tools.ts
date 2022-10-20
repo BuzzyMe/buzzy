@@ -14,6 +14,9 @@ export const MapTools = {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reviver: (key: string, value: any) => {
+        if (key === "connection") {
+            return;
+        }
         if(typeof value === 'object' && value !== null) {
             if (value.dataType === 'Map') {
                 return new Map(value.value);
