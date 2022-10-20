@@ -60,7 +60,7 @@ const Play: NextPage = () => {
                 </div>
             }
             <div className="card space-y-3">
-                <h1>Multiplayer (Not Working Yet!)</h1>
+                <h1>Multiplayer (WIP!)</h1>
                 {
                     peer && (
                         <div className="space-y-3">
