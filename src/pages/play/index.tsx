@@ -35,7 +35,7 @@ const Play: NextPage = () => {
             }
             if (d.type === "method") {
                 if (devices[0]) {
-                    const args: any[] = (d as any).params || [];
+                    const args: unknown[] = (d as any).params || [];
                     devices[0][d.method](...args);
                 }
                 return;
