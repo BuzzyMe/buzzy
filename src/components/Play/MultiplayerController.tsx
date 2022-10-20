@@ -2,6 +2,7 @@
 import { handler } from "modules/peer/handler";
 import { PeerDevicesMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
+import Peer from "peerjs";
 import { FC, useEffect, useState } from "react";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
@@ -16,8 +17,9 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
 
-    const connect = async (id: string) => {
-        const conn = peer?.connect(id);
+    const connect = async (id: string, peerInstance?: Peer) => {
+        const p = peerInstance ?? peer;
+        const conn = p?.connect(id);
         
         conn?.on('open', () => {
             conn.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
@@ -28,23 +30,23 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
     useEffect(() => {
         (async () => {
             if (defaultId && connectToPeerId === "") {
-                const p = await newPeerIfUndefined();
-                if (p && client) {
-                    const on = await new Promise((resolve) => {
+                const p = newPeerIfUndefined();
+                if (p) {
+                    const on = await new Promise<() => void>((resolve) => {
                         const on = async () => {
                             setConnectToPeerId(defaultId);
-                            await connect(defaultId);
+                            connect(defaultId, p);
                             resolve(on);
                         };
                         p.on("open", on);
                     });
                     return () => {
-                        p.removeListener("open", on as any);
+                        p.removeListener("open", on);
                     }
                 }
             }
         })()
-    }, [defaultId, client])
+    }, [defaultId])
     
     return (
         <div className="card space-y-3">
