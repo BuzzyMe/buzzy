@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
+import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
 import { useRouter } from "next/router";

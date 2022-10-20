@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
 import BasicController from "components/Play/Controller/Basic";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
-import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
+import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
 import { useRouter } from "next/router";
 import MultiplayerController from "components/Play/MultiplayerController";
 import MainLayout from "layout";
