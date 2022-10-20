@@ -1,8 +1,7 @@
-import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
 import { handler } from "modules/peer/handler";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
-import Peer, { Peer as TPeer } from "peerjs";
+import { Peer as TPeer } from "peerjs";
 import create from "zustand";
 import useButtplugStore from "./buttplug";
 

@@ -1,5 +1,5 @@
-import { NextPage, NextPageWithLayout } from "next";
-import { useEffect, useState } from "react";
+import { NextPageWithLayout } from "next";
+import { useState } from "react";
 import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } from "buttplug";
 import useButtplugStore from "store/buttplug";
 import MainLayout from "layout";

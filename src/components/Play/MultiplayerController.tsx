@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/device";
 import { handler } from "modules/peer/handler";
-import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
+import { PeerDevicesMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
-import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
