@@ -1,10 +1,13 @@
 import { ButtplugClientDevice, ButtplugMessageSorter, MessageAttributes, RotationCmd, VectorCmd, VibrationCmd } from "buttplug";
+import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import useButtplugStore from "store/buttplug";
 import { JSONTools } from "./tools";
 
 export class PeerDevice extends ButtplugClientDevice {
     static fromJSON(i: any) {
+        const input = {...i};
         const _sorter = new ButtplugMessageSorter();
+        Object.assign(_sorter, input._sorter)
         const e = new PeerDevice(
             i._devicePtr, 
             _sorter,
@@ -12,9 +15,10 @@ export class PeerDevice extends ButtplugClientDevice {
             i._name,
             []
         );
-        Object.assign(e, i)
+        delete input["_sorter"]
+        Object.assign(e, input)
         return e;
-    }    
+    }
 }
 
 export interface DevicesPeerMessage {
