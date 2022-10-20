@@ -1,4 +1,5 @@
-import { DevicesPeerMessage, PeerDevicesMessage } from "modules/peer/data";
+import { OnPeerDevicesMessage } from "modules/peer/data";
+import { PeerDevicesMessage } from "modules/peer/message";
 import { JSONTools } from "modules/peer/tools";
 import { Peer as TPeer } from "peerjs";
 import create from "zustand";
@@ -18,8 +19,8 @@ const usePeerStore = create<PeerStoreState>((set, get) => ({
         const { devices } = useButtplugStore.getState();
         peer?.on("connection", (c) => {
             c.on("data", (d) => {
-                PeerDevicesMessage(d as DevicesPeerMessage);
-                c.send({ type: "devices", devices: JSONTools.strip(devices) } as DevicesPeerMessage)
+                OnPeerDevicesMessage(d as PeerDevicesMessage, c);
+                c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
             })
         })
         set(() => ({peer}));

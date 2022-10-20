@@ -4,8 +4,8 @@ import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
 import { useEffect, useState } from "react";
 import { JSONTools } from "modules/peer/tools";
-import { DevicesPeerMessage } from "modules/peer/data";
 import BasicController from "components/Play/BasicController";
+import { PeerDevicesMessage } from "modules/peer/message";
 
 const Play: NextPage = () => {
     const { devices, client, newClientIfUndefined, setDevices } = useButtplugStore();
@@ -24,7 +24,7 @@ const Play: NextPage = () => {
     const connect = () => {
         const conn = peer?.connect(connectToPeerId);
         conn?.on('open', () => {
-            conn.send({ type: "devices", devices: JSONTools.strip(devices) } as DevicesPeerMessage)
+            conn.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
         })
         conn?.on('data', (d: any) => {
             console.log(d)
