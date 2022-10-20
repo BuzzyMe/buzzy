@@ -12,6 +12,8 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
     
+    console.log(vibrateStates)
+
     return (
         <div className="card space-y-3" key={d.Index}>
             <h1>
@@ -21,7 +23,9 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                 { 
                     vibrateStates.map((e, i) => (
                         <div className="pb-2" key={i}>
-                            <Slider value={e * 100} 
+                            <Slider 
+                                value={e * 100} 
+                                step={100 / (vibrate_attributes?.stepCount?.at(i) ?? 10)}
                                 onChange={(v) => {
                                     const new_vib_states = [...vibrateStates];
                                     new_vib_states[i] = v as number / 100;
