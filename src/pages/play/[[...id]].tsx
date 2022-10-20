@@ -7,8 +7,12 @@ import { JSONTools } from "modules/peer/tools";
 import BasicController from "components/Play/BasicController";
 import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
 import { getDevicePtr, OnPeerDevicesMessage } from "modules/peer/data";
+import { useRouter } from "next/router";
 
 const Play: NextPage = () => {
+    const router = useRouter();
+    const propConnectId = typeof router.query.id === "object" ? router.query.id[0] : undefined;
+
     const { devices, client, newClientIfUndefined } = useButtplugStore();
 
     useEffect(() => {
@@ -19,7 +23,7 @@ const Play: NextPage = () => {
         })();
     }, []);
 
-    const [connectToPeerId, setConnectToPeerId] = useState("");
+    const [connectToPeerId, setConnectToPeerId] = useState(propConnectId ?? "");
     const {peer, newPeerIfUndefined} = usePeerStore();
 
     const connect = () => {

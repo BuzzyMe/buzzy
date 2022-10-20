@@ -4,6 +4,10 @@ export const routes: Route[] = [
         href: "/",
     },
     {
+        name: "About",
+        href: "/about",
+    },
+    {
         name: "Play",
         href: "/play",
     },
