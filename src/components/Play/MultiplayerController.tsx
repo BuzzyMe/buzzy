@@ -32,17 +32,10 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
             if (defaultId) {
                 const p = newPeerIfUndefined();
                 if (p) {
-                    const on = await new Promise<() => void>((resolve) => {
-                        const on = async () => {
-                            setConnectToPeerId(defaultId);
-                            connect(defaultId, p);
-                            resolve(on);
-                        };
-                        p.on("open", on);
-                    });
-                    return () => {
-                        p.removeListener("open", on);
-                    }
+                    p.once("open", () => {
+                        setConnectToPeerId(defaultId);
+                        connect(defaultId, p);  
+                    })
                 }
             }
         })()
