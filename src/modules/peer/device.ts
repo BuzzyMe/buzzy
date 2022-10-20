@@ -2,15 +2,21 @@
 import { ButtplugClientDevice, ButtplugMessageSorter } from "buttplug";
 import { Buttplug } from "buttplug/dist/module/buttplug_ffi";
 import { DataConnection } from "peerjs";
+import usePeerStore from "store/peer";
 import { PeerCmdMessage } from "./message";
 
 export class PeerDevice extends ButtplugClientDevice {
-    connection?: DataConnection;
+    ota = true;
+    connectionId?: string;
+    peerId?: string;
 
     sendCommand(method: string, params?: any[]) {
         const message = { type: "method", method: method, devicePtr: getDevicePtr(this) } as PeerCmdMessage;
         if (params) message.params = params;
-        this.connection?.send(message);
+        const { peer } = usePeerStore.getState();
+        if (this.peerId && this.connectionId && peer) {
+            (peer.getConnection(this.peerId, this.connectionId) as DataConnection).send(message)
+        }
     }
     async vibrate(...a: any): Promise<void> {
         this.sendCommand("vibrate", a);
@@ -59,7 +65,8 @@ export class PeerDevice extends ButtplugClientDevice {
     }
     static fromJSONWithConnection(i: any, connection: DataConnection) {
         const ret = PeerDevice.fromJSON(i);
-        ret.connection = connection;
+        ret.connectionId = connection.connectionId;
+        ret.peerId = connection.peer;
         return ret;
     }
 }
