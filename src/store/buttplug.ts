@@ -1,11 +1,12 @@
 import { ButtplugClient, ButtplugClientDevice, buttplugInit } from "buttplug";
+import { PeerDevice } from "modules/multiplayer/peer/device";
 import create from "zustand";
 
 interface ButtplugState {
     client?: ButtplugClient,
     newClientIfUndefined: () => Promise<ButtplugClient | undefined>;
     initialized: boolean,
-    devices: ButtplugClientDevice[],
+    devices: (ButtplugClientDevice | PeerDevice)[],
     setDevices: (devices: ButtplugClientDevice[]) => void;
 }
 
