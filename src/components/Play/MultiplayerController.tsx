@@ -43,7 +43,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
         <div className="card space-y-3">
             <h1>Multiplayer (WIP!)</h1>
             <div className="space-y-3">
-            Make sure to connect all your devices first before inviting someone! <br />
+            Invite or join a session! <br />
             {
                 peer && (
                     <>
