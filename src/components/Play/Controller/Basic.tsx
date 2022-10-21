@@ -3,9 +3,10 @@ import Slider from "rc-slider";
 import { FC, useState } from "react";
 import styles from 'styles/Slider.module.css';
 import 'rc-slider/assets/index.css';
+import { PeerDevice } from "modules/multiplayer/peer/device";
 
 interface BasicControllerProps {
-    device: ButtplugClientDevice
+    device: ButtplugClientDevice | PeerDevice
 }
 
 const BasicController: FC<BasicControllerProps> = ({device: d}) => {
@@ -15,7 +16,7 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     return (
         <div className="card space-y-3" key={d.Index}>
             <h1>
-                {d.Name} 
+                {d.Name} {d instanceof PeerDevice ? "(Online)" : ""}
             </h1>
             <>
                 { 
