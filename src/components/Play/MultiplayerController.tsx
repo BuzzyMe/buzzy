@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { handler } from "modules/peer/handler";
-import { PeerDevicesMessage } from "modules/peer/message";
-import { JSONTools } from "modules/peer/tools";
+import { handler } from "modules/multiplayer/peer/handler";
+import { PeerDevicesMessage } from "modules/multiplayer/peer/message";
+import { JSONTools } from "modules/multiplayer/peer/tools";
 import Peer from "peerjs";
 import { FC, useEffect, useState } from "react";
 import useButtplugStore from "store/buttplug";

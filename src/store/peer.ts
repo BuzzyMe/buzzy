@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { handler } from "modules/peer/handler";
-import { PeerDevicesMessage, PeerMessage } from "modules/peer/message";
-import { JSONTools } from "modules/peer/tools";
+import { handler } from "modules/multiplayer/peer/handler";
+import { PeerDevicesMessage, PeerMessage } from "modules/multiplayer/peer/message";
+import { JSONTools } from "modules/multiplayer/peer/tools";
 import { Peer as TPeer } from "peerjs";
 import create from "zustand";
 import useButtplugStore from "./buttplug";
