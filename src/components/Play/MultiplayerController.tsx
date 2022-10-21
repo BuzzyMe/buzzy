@@ -13,7 +13,7 @@ interface MultiplayerControllerProps {
 
 const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) => {
     const { peer, newPeerIfUndefined } = usePeerStore();
-    const { devices, client } = useButtplugStore();
+    const { devices } = useButtplugStore();
 
     const [connectToPeerId, setConnectToPeerId] = useState("");
 
