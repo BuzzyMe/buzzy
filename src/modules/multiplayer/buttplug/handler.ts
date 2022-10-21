@@ -4,7 +4,9 @@ import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
 import { PeerDevice } from "../peer/device";
 import { PeerDevicesMessage } from "../peer/message";
-import { JSONTools } from "../peer/tools";
+import { JSONTools, PeerTools } from "../peer/tools";
+
+
 
 const buttplug_handler = async (client: ButtplugClient) => {
     const send_devices = (devices: (PeerDevice | ButtplugClientDevice)[]) => {
@@ -13,9 +15,8 @@ const buttplug_handler = async (client: ButtplugClient) => {
         const connections: (DataConnection | MediaConnection)[] | undefined = peer?.connections ? Object.values(peer?.connections).flatMap(e => e) : undefined;
         if (!connections) return;
         for (const c of connections) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if (typeof (c as any).send === "function") {
-                (c as DataConnection).send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
+            if (PeerTools.isDataConnection(c)) {
+                c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage);
             }
         }
     }

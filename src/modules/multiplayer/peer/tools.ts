@@ -1,3 +1,5 @@
+import { DataConnection, MediaConnection } from "peerjs";
+
 export const MapTools = {
     replacer: (key: string, value: unknown) => {
         if(value instanceof Map) {
@@ -26,5 +28,11 @@ export const JSONTools = {
     },
     unstrip: <T,>(i: T) => {
         return JSON.parse(JSON.stringify(i), MapTools.reviver) as T;
+    }
+}
+
+export const PeerTools = {
+    isDataConnection(c: any): c is DataConnection {
+        return typeof c.send === "function";
     }
 }
