@@ -22,7 +22,6 @@ export const MapTools = {
 
 export const JSONTools = {
     strip: <T,>(i: T) => {
-        console.log(i);
         return JSON.parse(JSON.stringify(i, MapTools.replacer)) as T;
     },
     unstrip: <T,>(i: T) => {
