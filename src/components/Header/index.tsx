@@ -7,6 +7,7 @@ import { Route, routes } from "modules/routes";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import PWAHead from "./PWAHead";
+import Image from "next/image";
 
 const Header: FC = () => {
     const router = useRouter();
@@ -50,9 +51,11 @@ const Header: FC = () => {
                                     </Disclosure.Button>
                                 </div>
                                 <div className="flex flex-1 items-center sm:items-stretch justify-between">
-                                    <div className="flex flex-shrink-0 px-3 text-lg items-center hover:text-primary transition-all">
+                                    <div className="flex items-center justify-center">
                                         <Link href="/">
-                                            <a><span className="text-primary">Buzzy!</span></a>
+                                            <a className="relative aspect-square h-8">
+                                                <Image src="/icons/icon.svg" layout="fill" alt="Buzzy! Icon" />
+                                            </a>
                                         </Link>
                                     </div>
                                     <div className="hidden sm:ml-6 sm:block">
