@@ -8,7 +8,7 @@ import { JSONTools, PeerTools } from "../peer/tools";
 
 
 
-const buttplug_handler = async (client: ButtplugClient) => {
+const multiplayer_buttplug_handler = async (client: ButtplugClient) => {
     const send_devices = (devices: (PeerDevice | ButtplugClientDevice)[]) => {
         console.log("resent devices", devices);
         const { peer } = usePeerStore.getState();
@@ -31,4 +31,4 @@ const buttplug_handler = async (client: ButtplugClient) => {
     })
 }
 
-export default buttplug_handler;
+export default multiplayer_buttplug_handler;

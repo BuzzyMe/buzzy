@@ -1,5 +1,5 @@
 import { ButtplugClient, ButtplugClientDevice, buttplugInit } from "buttplug";
-import buttplug_handler from "modules/multiplayer/buttplug/handler";
+import multiplayer_buttplug_handler from "modules/multiplayer/buttplug/handler";
 import { PeerDevice } from "modules/multiplayer/peer/device";
 import create from "zustand";
 
@@ -28,7 +28,7 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
             return {...state, client, initialized: true};
         })
         get_client = get().client;
-        get_client && buttplug_handler(get_client);
+        get_client && multiplayer_buttplug_handler(get_client);
         return get_client;
     },
     initialized: false,
