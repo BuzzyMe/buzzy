@@ -17,3 +17,6 @@ I've chosen to use Next.js as my framework of choice as:
 1. It allows me to easily add features in the future that might require a server such as user generated content like patterns, friend lists, etc.
 2. It offers a bunch of goodies like SSR for SSO, and a nice plugin for configuring generating the worker for PWA, easy project setup with Create-T3-App, etc. 
 3. It simplifies Webpack configuration with React so I don't have to use something like CRACO with Create-React-App when using the Buttplug library.
+
+## Deploying
+Read [this](deploy-guide.md)...
