@@ -5,6 +5,7 @@ const PWAHead: FC = () => {
         <Head>
             <link rel="manifest" href="/manifest.json" />
             <meta name="theme-color" content="#714fac" />
+            <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         </Head>
     )
 }
