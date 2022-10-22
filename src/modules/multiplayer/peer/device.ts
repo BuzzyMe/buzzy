@@ -28,8 +28,8 @@ export class PeerDevice extends ButtplugClientDevice {
     rawRead(endpoint: Buttplug.Endpoint, expectedLength: number, timeout: number): Promise<Uint8Array> {
         throw new Error("Method not implemented.");
     }
-    rawWrite(endpoint: Buttplug.Endpoint, data: Uint8Array, writeWithResponse: boolean): Promise<void> {
-        throw new Error("Method not implemented.");
+    async rawWrite(...a: any): Promise<void> {
+        this.sendCommand("rawWrite", a);
     }
     rawSubscribe(endpoint: Buttplug.Endpoint): Promise<void> {
         throw new Error("Method not implemented.");
