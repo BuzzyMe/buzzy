@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const getLayout = (Component as typeof Component & NextPageWithLayout).getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
   return (
-    <SessionProvider session={session}>
+    // <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         {/* <ButtplugProvider> */}
           <PeerProvider>
@@ -25,7 +25,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           </PeerProvider>
         {/* </ButtplugProvider> */}
       </ThemeProvider>
-    </SessionProvider>
+    // </SessionProvider>
   );
 };
 
