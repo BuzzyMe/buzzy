@@ -1,4 +1,7 @@
 # Buzzy!
+<div align="center">
+    <img src="/public/icons/icon.svg">
+</div>
 
 ## About
 Buzzy! is a Progressive Web App for controlling IoT adult toys across the internet (using WebRTC P2P) and locally (through Bluetooth and Intiface). It also uses the Buttplug-rs library for support across a wide range of device models.
