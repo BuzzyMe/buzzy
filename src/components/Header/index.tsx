@@ -30,8 +30,8 @@ const Header: FC = () => {
                 <meta name="description" content={description} />
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
-                <PWAHead />
             </Head>
+            <PWAHead />
             
             <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-50 dark:bg-[#1C1B22] bg-white">
                 {({open, close}) => (
