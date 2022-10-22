@@ -1,6 +1,6 @@
 # Buzzy!
 <div align="center">
-    <img src="/public/icons/icon.svg">
+    <img width=250 src="/public/icons/icon.svg">
 </div>
 
 ## About
