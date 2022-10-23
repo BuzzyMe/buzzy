@@ -72,10 +72,10 @@ const Settings: NextPageWithLayout = () => {
                         }
                     </tbody>
                 </table>
-                {moreSettings && <input type="text" className="input w-full" placeholder="Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
+                {moreSettings && <input type="text" className="input w-full" placeholder="Initiface Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
                 <div className="action-container flex-wrap">
                     <button className="action" onClick={embedded_connect}>WebBluetooth</button>
-                    <button className="action" onClick={external_connect}>External</button>
+                    <button className="action" onClick={external_connect}>Intiface</button>
                     <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                 </div>
             </div>
