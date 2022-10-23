@@ -7,7 +7,7 @@ import ButtplugLayout from "layout/buttplug";
 import { PeerDevice } from "modules/multiplayer/peer/device";
 
 const Settings: NextPageWithLayout = () => {
-    const { devices, client } = useButtplugStore();
+    const { devices, client, connect, startScanning, stopScanning } = useButtplugStore();
 
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");
@@ -18,7 +18,7 @@ const Settings: NextPageWithLayout = () => {
             if (serverUrl.length) {
                 opts.Address = serverUrl;
             }
-            await client?.connect(opts);
+            await connect(opts);
         }
         setMoreSettings(false);
     }
@@ -26,9 +26,9 @@ const Settings: NextPageWithLayout = () => {
     const embedded_connect = async () => {
         try {
             if (!client?.Connected) {
-                await client?.connect(new ButtplugEmbeddedConnectorOptions());
+                await connect(new ButtplugEmbeddedConnectorOptions());
             }
-            await client?.startScanning();
+            await startScanning();
         }
         catch (e) {
             console.log(e)
@@ -74,10 +74,11 @@ const Settings: NextPageWithLayout = () => {
                             <button className="action" onClick={external_connect}>Intiface</button>
                             <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                         </> :
-                        <>
-                            <button className="action" onClick={client?.startScanning}>Scan Devices</button>
-                            <button className="action" onClick={client?.stopScanning}>Stop Scanning</button>
-                        </>
+                        (
+                            !client.isScanning ?
+                            <button className="action" onClick={startScanning}>Scan Devices</button>
+                            : <button className="action" onClick={stopScanning}>Stop Scanning</button>
+                        )
                     }
                 </div>
             </div>

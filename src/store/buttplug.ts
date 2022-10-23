@@ -6,7 +6,10 @@ import create from "zustand";
 interface ButtplugState {
     client?: ButtplugClient,
     newClientIfUndefined: () => Promise<ButtplugClient | undefined>;
-    initialized: boolean,
+    connect: (...options: Parameters<typeof ButtplugClient.prototype.connect>) => Promise<void>,
+    startScanning: () => Promise<void>,
+    stopScanning: () => Promise<void>,
+
     devices: (ButtplugClientDevice | PeerDevice)[],
     setDevices: (devices: ButtplugClientDevice[]) => void;
 }
@@ -25,13 +28,25 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
             client.on("deviceremoved", (e) => {
                 set((state) => ({...state, devices: [...state.devices].filter((d) => d.Index !== e.Index)}));
             })
-            return {...state, client, initialized: true};
+            return {...state, client};
         })
         get_client = get().client;
         get_client && multiplayer_buttplug_handler(get_client);
         return get_client;
     },
-    initialized: false,
+    connect: async (options) => {
+        const c = get().client;
+        return await c?.connect(options).then(() => set((state) => ({...state, client: c})));
+    },
+    startScanning: async () => {
+        const c = get().client;
+        return await c?.startScanning().then(() => set((state) => ({...state, client: c})))
+    },
+    stopScanning: async () => {
+        const c = get().client;
+        return await c?.stopScanning().then(() => set((state) => ({...state, client: c})))
+    },
+
     devices: [],
     setDevices: (devices) => set((state) => ({...state, devices}))
 }));
