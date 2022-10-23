@@ -7,6 +7,10 @@
         scroll-behavior: smooth !important;
     }
 
+    html.dark {
+        @apply bg-[#1C1B22]
+    }
+
     .auto-limit-w {
         @apply mx-auto max-w-7xl px-3 sm:px-6 lg:px-8
     }
