@@ -12,36 +12,28 @@ const Settings: NextPageWithLayout = () => {
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");
 
-    const connect = async (opts: ButtplugWebsocketConnectorOptions | ButtplugEmbeddedConnectorOptions) => {
-        if (client?.Connected) {
-            await client?.disconnect();
-        }
-        try {
+    const external_connect = async () => {
+        if (!client?.Connected) {
+            const opts = new ButtplugWebsocketConnectorOptions();
+            if (serverUrl.length) {
+                opts.Address = serverUrl;
+            }
             await client?.connect(opts);
         }
-        catch (e) {
-            console.log(e);
-        }
-        return client;
-    }
-
-    const external_connect = async () => {
-        const opts = new ButtplugWebsocketConnectorOptions();
-        if (serverUrl.length) {
-            opts.Address = serverUrl;
-        }
-        connect(opts);
+        setMoreSettings(false);
     }
 
     const embedded_connect = async () => {
-        const client = await connect(new ButtplugEmbeddedConnectorOptions());
         try {
+            if (!client?.Connected) {
+                await client?.connect(new ButtplugEmbeddedConnectorOptions());
+            }
             await client?.startScanning();
         }
         catch (e) {
             console.log(e)
-            await client?.disconnect();
         }
+        setMoreSettings(false);
     }
 
     return (
@@ -75,9 +67,18 @@ const Settings: NextPageWithLayout = () => {
                 </table>
                 {moreSettings && <input type="text" className="input w-full" placeholder="Initiface Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
                 <div className="action-container flex-wrap">
-                    <button className="action" onClick={embedded_connect}>WebBluetooth</button>
-                    <button className="action" onClick={external_connect}>Intiface</button>
-                    <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
+                    {
+                        !client?.Connected ?
+                        <>
+                            <button className="action" onClick={embedded_connect}>WebBluetooth</button>
+                            <button className="action" onClick={external_connect}>Intiface</button>
+                            <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
+                        </> :
+                        <>
+                            <button className="action" onClick={client?.startScanning}>Scan Devices</button>
+                            <button className="action" onClick={client?.stopScanning}>Stop Scanning</button>
+                        </>
+                    }
                 </div>
             </div>
         </div>
