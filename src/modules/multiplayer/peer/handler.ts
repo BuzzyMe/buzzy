@@ -46,4 +46,7 @@ export const handler = (conn: DataConnection) => {
             return;
         }
     })
+    conn.on("close", () => {
+        OnPeerDevicesMessage({type: "devices", devices: []}, conn);
+    })
 }
