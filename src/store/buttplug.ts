@@ -28,6 +28,8 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
             client.on("deviceremoved", (e) => {
                 set((state) => ({...state, devices: [...state.devices].filter((d) => d.Index !== e.Index)}));
             })
+            client.on("scanningfinished", () => set((state) => ({...state})));
+            client.on("serverdisconnect", () => set((state) => ({...state})));
             return {...state, client};
         })
         get_client = get().client;
