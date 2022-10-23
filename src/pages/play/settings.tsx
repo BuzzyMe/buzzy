@@ -4,6 +4,7 @@ import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } f
 import useButtplugStore from "store/buttplug";
 import MainLayout from "layout";
 import ButtplugLayout from "layout/buttplug";
+import { PeerDevice } from "modules/multiplayer/peer/device";
 
 const Settings: NextPageWithLayout = () => {
     const { devices, client } = useButtplugStore();
@@ -62,7 +63,7 @@ const Settings: NextPageWithLayout = () => {
                         {   
                             devices.length ? devices.map(d => (
                                 <tr className="border" key={d.Index}>
-                                    <td>{d.Name}</td>
+                                    <td>{d.Name + (d instanceof PeerDevice ? "Online" : "") }</td>
                                     <td><button className="underline" onClick={() => d.emit("deviceremoved")}>Disconnect</button></td>
                                 </tr>
                             )) : 
