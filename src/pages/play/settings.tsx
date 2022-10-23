@@ -74,11 +74,14 @@ const Settings: NextPageWithLayout = () => {
                             <button className="action" onClick={external_connect}>Intiface</button>
                             <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                         </> :
-                        (
-                            !client.isScanning ?
-                            <button className="action" onClick={startScanning}>Scan Devices</button>
-                            : <button className="action" onClick={stopScanning}>Stop Scanning</button>
-                        )
+                        <>
+                            {
+                                !client.isScanning ?
+                                <button className="action" onClick={startScanning}>Scan Devices</button>
+                                : <button className="action" onClick={stopScanning}>Stop Scanning</button>
+                            }
+                            <button className="action" onClick={client.disconnect}>Back</button>
+                        </>
                     }
                 </div>
             </div>
