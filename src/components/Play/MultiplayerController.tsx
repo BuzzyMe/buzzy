@@ -47,7 +47,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
             {
                 peer && (
                     <>
-                        Your ID: <pre className="inline">{peer.id ?? "Loading..."}</pre>
+                        Your ID: <pre className="inline whitespace-pre-wrap break-words">{peer.id ?? "Loading..."}</pre>
                         <input className="input w-full" placeholder="Enter ID to Connect to" type="text" value={connectToPeerId} onChange={e => setConnectToPeerId(e.target.value)} />
                     </>
                 )                    

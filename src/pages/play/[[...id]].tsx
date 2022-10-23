@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import MultiplayerController from "components/Play/MultiplayerController";
 import MainLayout from "layout";
 import ButtplugLayout from "layout/buttplug";
+import Link from "next/link";
 
 const Play: NextPageWithLayout = () => {
 
@@ -23,7 +24,7 @@ const Play: NextPageWithLayout = () => {
                 <div className="card space-y-3">
                     <h1>No Devices Connected!</h1>
                     <div>
-                        Either connect to a multiplayer session or click on settings to setup a local device...
+                        Either connect to a multiplayer session or click on <Link href="/play/settings"><a className="underline text-primary">settings</a></Link> to setup a local device...
                     </div>
                 </div>
             }
