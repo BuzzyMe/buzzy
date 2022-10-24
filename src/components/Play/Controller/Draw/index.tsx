@@ -42,7 +42,7 @@ const DrawController: FC<DrawControllerProps> = ({device: d}) => {
         <div ref={container_ref} className="card h-96 w-full flex-col justify-end items-center flex">
             <DndContext onDragMove={ondragmove} onDragEnd={ondragend} modifiers={[restrictToParentElement]}>
                 {
-                    vibrateStates.map((e, i) => <Draggable key={i} id="draggable" data={{ index: i }} />)
+                    vibrateStates.map((e, i) => <Draggable key={i} id={"draggable-"+i} data={{ index: i }} />)
                 }
             </DndContext>
         </div>
