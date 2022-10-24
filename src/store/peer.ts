@@ -31,6 +31,7 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
                 }
             })
             handler(c);
+            set((state) => ({peer: state.peer}));
         })
         peer.on("open", () => set((state) => ({peer: state.peer})));
         set(() => ({peer}));
