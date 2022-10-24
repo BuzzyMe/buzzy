@@ -13,35 +13,35 @@ export interface PeerStoreState {
 }
 
 const usePeerStore = create<PeerStoreState>((set, get) => {
+    const refreshPeerState = () => set((state) => ({peer: state.peer}));
+
     return {
-    peer: undefined,
-    newPeerIfUndefined: () => {
-        if (get().peer) return get().peer;
-        
-        const importedPeer: any = require('peerjs');
-        const Peer: typeof TPeer = importedPeer.Peer;
+        peer: undefined,
+        newPeerIfUndefined: () => {
+            if (get().peer) return get().peer;
+            
+            const importedPeer: any = require('peerjs');
+            const Peer: typeof TPeer = importedPeer.Peer;
 
-        const refreshPeerState = () => set((state) => ({peer: state.peer}));
+            const peer = new Peer();
+            peer?.on("connection", (c) => {
+                c.on("data", (data) => {
+                    const d = data as PeerMessage;
+                    const { devices } = useButtplugStore.getState();
+                    if (d.type === "devices") {
+                        c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
+                    }
+                })
+                c.on("close", refreshPeerState);
+                handler(c);
 
-        const peer = new Peer();
-        peer?.on("connection", (c) => {
-            c.on("data", (data) => {
-                const d = data as PeerMessage;
-                const { devices } = useButtplugStore.getState();
-                if (d.type === "devices") {
-                    c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
-                }
+                refreshPeerState();
             })
-            c.on("close", refreshPeerState);
-            handler(c);
-
-            refreshPeerState();
-        })
-        peer.on("open", refreshPeerState);
-        set(() => ({peer}));
-        return get().peer;
+            peer.on("open", refreshPeerState);
+            set(() => ({peer}));
+            return get().peer;
+        }
     }
-}
 });
 
 export default usePeerStore
