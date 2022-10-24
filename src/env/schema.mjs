@@ -38,7 +38,7 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 export const clientEnv = {
-  NEXT_PUBLIC_PEERJS_HOST: process.env.PEERJS_HOST,
-  NEXT_PUBLIC_PEERJS_PORT: process.env.PEERJS_PORT,
-  NEXT_PUBLIC_PEERJS_PATH: process.env.PEERJS_PATH,
+  NEXT_PUBLIC_PEERJS_HOST: process.env.NEXT_PUBLIC_PEERJS_HOST,
+  NEXT_PUBLIC_PEERJS_PORT: process.env.NEXT_PUBLIC_PEERJS_PORT,
+  NEXT_PUBLIC_PEERJS_PATH: process.env.NEXT_PUBLIC_PEERJS_PATH,
 };

@@ -12,11 +12,11 @@ export interface PeerStoreState {
     peer?: TPeer,
     newPeerIfUndefined: () => TPeer | undefined
 }
-const getPeerConfig = (e: typeof env) => {
+const getPeerConfig = () => {
     const config: ConstructorParameters<typeof TPeer>[1] = {};
-    e.NEXT_PUBLIC_PEERJS_HOST?.length && (config.host = e.NEXT_PUBLIC_PEERJS_HOST);
-    e.NEXT_PUBLIC_PEERJS_PORT?.length && (config.port = Number(e.NEXT_PUBLIC_PEERJS_PORT));
-    e.NEXT_PUBLIC_PEERJS_PATH?.length && (config.path = e.NEXT_PUBLIC_PEERJS_PATH);
+    env.NEXT_PUBLIC_PEERJS_HOST?.length && (config.host = env.NEXT_PUBLIC_PEERJS_HOST);
+    env.NEXT_PUBLIC_PEERJS_PORT?.length && (config.port = Number(env.NEXT_PUBLIC_PEERJS_PORT));
+    env.NEXT_PUBLIC_PEERJS_PATH?.length && (config.path = env.NEXT_PUBLIC_PEERJS_PATH);
     return config;
 }
 
@@ -31,9 +31,7 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
             const importedPeer: any = require('peerjs');
             const Peer: typeof TPeer = importedPeer.Peer;
 
-            console.log(env);
-
-            const peer = new Peer({...getPeerConfig(env)});
+            const peer = new Peer({...getPeerConfig()});
             peer?.on("connection", (c) => {
                 c.on("data", (data) => {
                     const d = data as PeerMessage;
