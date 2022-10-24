@@ -67,7 +67,7 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
                 {
                     !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
                     <>
-                        <button className="action" onClick={() => navigator.clipboard.writeText(window.location.origin + "/play/" + peer.id)}>Copy Invite URL</button>
+                        { peer.id && <button className="action" onClick={() => navigator.clipboard.writeText(window.location.origin + "/play/" + peer.id)}>Copy Invite URL</button>}
                         { !Boolean(connections?.length) ? 
                             <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
                             : <button className="action" onClick={() => disconnectAllConnections()}>Disconnect</button>
