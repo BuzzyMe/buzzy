@@ -29,6 +29,15 @@ const OnPeerDevicesMessage = (data: PeerDevicesMessage, c: DataConnection) => {
     setDevices([...omitted_ota_devices, ...instantiated_new_devices]);
 }
 
+const allowedExecutableMessageMethods = [
+    "vibrate",
+    "rotate",
+    "linear",
+    "batteryLevel",
+    "rssiLevel",
+    "stop"
+]
+
 export const handler = (conn: DataConnection) => {
     conn.on('data', (data) => {
         const d = data as PeerMessage;
@@ -37,6 +46,7 @@ export const handler = (conn: DataConnection) => {
             return;
         }
         if (d.type === "method") {
+            if (!allowedExecutableMessageMethods.includes(d.method)) return;
             const {devices} = useButtplugStore.getState();
             const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
             if (device_index !== -1) {
