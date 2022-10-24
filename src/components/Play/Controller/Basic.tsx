@@ -14,36 +14,25 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
     
     return (
-        <div className="card space-y-3" key={d.Index}>
-            <h1>
-                {d.Name} {d instanceof PeerDevice ? "(Online)" : ""}
-            </h1>
-            <>
-                { 
-                    vibrateStates.map((e, i) => (
-                        <div className="pb-2" key={i}>
-                            <Slider 
-                                value={e * 100} 
-                                step={100 / (vibrate_attributes?.stepCount?.at(i) ?? 10)}
-                                onChange={(v) => {
-                                    const new_vib_states = [...vibrateStates];
-                                    new_vib_states[i] = v as number / 100;
-                                    d.vibrate(new_vib_states);
-                                    setVibrateStates(new_vib_states);
-                                }} 
-                                className={styles.slider} 
-                            />
-                        </div>
-                    ))
-                }
-            </>
-            <div className="action-container">
-                {
-                    d.messageAttributes(ButtplugDeviceMessageType.StopDeviceCmd) && 
-                    <button className="action" onClick={() => d.stop()}>Stop</button>
-                }
-            </div>
-        </div>
+        <>
+            { 
+                vibrateStates.map((e, i) => (
+                    <div className="pb-2" key={i}>
+                        <Slider 
+                            value={e * 100} 
+                            step={100 / (vibrate_attributes?.stepCount?.at(i) ?? 10)}
+                            onChange={(v) => {
+                                const new_vib_states = [...vibrateStates];
+                                new_vib_states[i] = v as number / 100;
+                                d.vibrate(new_vib_states);
+                                setVibrateStates(new_vib_states);
+                            }} 
+                            className={styles.slider} 
+                        />
+                    </div>
+                ))
+            }
+        </>
     )
 }
 

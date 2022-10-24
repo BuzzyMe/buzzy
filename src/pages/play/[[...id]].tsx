@@ -7,6 +7,7 @@ import MultiplayerController from "components/Play/MultiplayerController";
 import MainLayout from "layout";
 import ButtplugLayout from "layout/buttplug";
 import Link from "next/link";
+import DevicePanel from "components/Play/DevicePanel";
 
 const Play: NextPageWithLayout = () => {
 
@@ -19,7 +20,7 @@ const Play: NextPageWithLayout = () => {
         <div className="auto-limit-w pt-20 space-y-3">
             {
                 devices.length ? devices.map((d) => (
-                    <BasicController key={d.Index} device={d} />
+                    <DevicePanel key={d.Index} device={d} />
                 )) :
                 <div className="card space-y-3">
                     <h1>No Devices Connected!</h1>
@@ -30,6 +31,7 @@ const Play: NextPageWithLayout = () => {
             }
             <MultiplayerController defaultId={propConnectId} />
         </div>
+        
     )
 }
 
@@ -44,3 +46,5 @@ Play.getLayout = (page) => {
 };
 
 export default Play;
+
+
