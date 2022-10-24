@@ -2,7 +2,7 @@
 import { handler } from "modules/multiplayer/peer/handler";
 import { PeerDevicesMessage } from "modules/multiplayer/peer/message";
 import { JSONTools } from "modules/multiplayer/peer/tools";
-import Peer from "peerjs";
+import Peer, { DataConnection, MediaConnection } from "peerjs";
 import { FC, useEffect, useState } from "react";
 import useButtplugStore from "store/buttplug";
 import usePeerStore from "store/peer";
@@ -25,6 +25,16 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
             conn.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
         })
         conn && handler(conn);
+    }
+
+    const connections: (DataConnection | MediaConnection)[] | undefined = peer?.connections ? Object.values(peer?.connections).flatMap(e => e) : undefined;
+
+    const disconnectAllConnections = () => {
+        if (connections) {
+            for (const c of connections) {
+                c.close();
+            }
+        }
     }
 
     useEffect(() => {
@@ -58,7 +68,10 @@ const MultiplayerController: FC<MultiplayerControllerProps> = ({ defaultId }) =>
                     !peer ? <button className="action" onClick={newPeerIfUndefined}>Enable Multiplayer</button> :
                     <>
                         <button className="action" onClick={() => navigator.clipboard.writeText(window.location.origin + "/play/" + peer.id)}>Copy Invite URL</button>
-                        <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
+                        { !Boolean(connections?.length) ? 
+                            <button className="action" onClick={() => connect(connectToPeerId)}>Connect</button>
+                            : <button className="action" onClick={() => disconnectAllConnections()}>Disconnect</button>
+                        }
                     </>
                 }
             </div>
