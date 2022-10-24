@@ -30,6 +30,7 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
                     c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
                 }
             })
+            c.on("close", () => set((state) => ({peer: state.peer})));
             handler(c);
             set((state) => ({peer: state.peer}));
         })
