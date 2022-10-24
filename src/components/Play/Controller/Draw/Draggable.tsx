@@ -9,7 +9,7 @@ const Draggable: FC<DraggableProps> = (props) => {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     } : undefined;
     return (
-        <button className="max-w-fit card transition-none rounded-full aspect-square p-3" ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <button className="max-w-fit card transition-none rounded-full aspect-square p-3 mx-3" ref={setNodeRef} style={style} {...listeners} {...attributes}>
             DRAW
         </button>
     )

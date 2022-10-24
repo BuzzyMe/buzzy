@@ -14,7 +14,7 @@ interface DrawControllerProps {
 const DrawController: FC<DrawControllerProps> = ({device: d}) => {
     const container_ref = useRef<HTMLDivElement>(null);
     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-    const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
+    const [vibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
 
     const ondragmove = (e: DragMoveEvent) => {
         if (container_ref.current) {
