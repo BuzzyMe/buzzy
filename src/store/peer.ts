@@ -21,6 +21,8 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
         const importedPeer: any = require('peerjs');
         const Peer: typeof TPeer = importedPeer.Peer;
 
+        const refreshPeerState = () => set((state) => ({peer: state.peer}));
+
         const peer = new Peer();
         peer?.on("connection", (c) => {
             c.on("data", (data) => {
@@ -30,11 +32,12 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
                     c.send({ type: "devices", devices: JSONTools.strip(devices) } as PeerDevicesMessage)
                 }
             })
-            c.on("close", () => set((state) => ({peer: state.peer})));
+            c.on("close", refreshPeerState);
             handler(c);
-            set((state) => ({peer: state.peer}));
+
+            refreshPeerState();
         })
-        peer.on("open", () => set((state) => ({peer: state.peer})));
+        peer.on("open", refreshPeerState);
         set(() => ({peer}));
         return get().peer;
     }
