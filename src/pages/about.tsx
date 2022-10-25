@@ -15,7 +15,7 @@ const About: NextPage = () => {
                     - Compatiblity with a wide range of device models. <br/>
                 </div>
                 <div className="action-container">
-                    <Link href="https://github.com/jy1263/buzzy-next">
+                    <Link href="https://github.com/BuzzyMe/buzzy">
                         <a className="action">
                             Source Code
                         </a>
