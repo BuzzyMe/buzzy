@@ -5,9 +5,12 @@ import useButtplugStore from "store/buttplug";
 import MainLayout from "layout";
 import ButtplugLayout from "layout/buttplug";
 import { PeerDevice } from "modules/multiplayer/peer/device";
+import { useErrorStore } from "store/error";
 
 const Settings: NextPageWithLayout = () => {
     const { devices, client, connect, startScanning, stopScanning } = useButtplugStore();
+
+    const { newError } = useErrorStore();
 
     const [ moreSettings, setMoreSettings ] = useState(false);
     const [ serverUrl, setServerUrl ] = useState("");
@@ -25,13 +28,14 @@ const Settings: NextPageWithLayout = () => {
 
     const embedded_connect = async () => {
         try {
+            if (!(navigator as typeof navigator & { bluetooth?: object }).bluetooth) throw "WebBluetooth is not supported on this browser." ;
             if (!client?.Connected) {
                 await connect(new ButtplugEmbeddedConnectorOptions());
             }
             await startScanning();
         }
         catch (e) {
-            console.log(e)
+            newError(e as string)
         }
         setMoreSettings(false);
     }

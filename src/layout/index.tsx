@@ -1,3 +1,4 @@
+import ErrorHandler from "components/ErrorHandler";
 import Header from "components/Header";
 import { FC } from "react";
 
@@ -10,6 +11,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         <>
             <Header />
             {children}
+            <ErrorHandler />
         </>
     );
 }
