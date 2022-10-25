@@ -12,7 +12,7 @@ const About: NextPage = () => {
                     All of the controller networking is Peer-2-Peer with each client sending each other data. That means:<br/>
                     - Privacy as data cannot be intervened by a server. <br/>
                     - Lower latency as clients are streaming directly to each other. <br/>
-                    - Compatiblity with over 190 adult toy models. <br/>
+                    - Compatiblity with a wide range of device models. <br/>
                 </div>
                 <div className="action-container">
                     <Link href="https://github.com/jy1263/buzzy-next">
