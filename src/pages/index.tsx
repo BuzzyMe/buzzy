@@ -7,7 +7,7 @@ const Home: NextPage = () => {
             <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
                 Buzzy!
             </h1>
-            <p className="text-2xl">Have some fun :3</p>
+            <p className="text-2xl">Have some fun...</p>
             <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                 <CardLink
                     name="Play"
