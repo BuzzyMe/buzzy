@@ -33,7 +33,7 @@ const Settings: NextPageWithLayout = () => {
 
     const embedded_connect = async () => {
         try {
-            if (!(navigator as typeof navigator & { bluetooth?: object }).bluetooth) throw new Error("WebBluetooth is not supported on this browser.");
+            if (await !(navigator as any).bluetooth?.getAvailability()) throw new Error("WebBluetooth is not supported on this browser.");
             if (!client?.Connected) {
                 await connect(new ButtplugEmbeddedConnectorOptions());
             }
