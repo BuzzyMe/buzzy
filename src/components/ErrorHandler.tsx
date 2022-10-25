@@ -9,8 +9,8 @@ const ErrorHandler: FC = () => {
             {
                 errors.map(e => (
                     <div className="card border-error" key={e.id}>
-                        <h1>Error</h1>
-                        {e.message}
+                        <h1>{e.error.name}</h1>
+                        {e.error.message}
                     </div>
                 ))
             }

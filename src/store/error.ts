@@ -1,23 +1,23 @@
 import create from "zustand";
 
-interface Error {
+interface ErrorContainer {
     id: string;
-    message: string;
+    error: Error;
 }
 
 interface ErrorState {
-    errors: Error[],
-    newError: (message: string) => void;
+    errors: ErrorContainer[],
+    newError: (error: Error) => void
 }
 
 export const useErrorStore = create<ErrorState>((set, get) => ({
     errors: [],
-    newError(message: string) {
+    newError(error: Error) {
         const errors = get().errors;
         const id = Date.now().toString();
         setTimeout(() => {
             set({errors: get().errors.filter(e => e.id !== id)});
-        }, 1000)
-        set({errors: [...errors, { id, message }]});
+        }, 5000)
+        set({errors: [...errors, { id, error }]});
     },
 }));

@@ -17,25 +17,30 @@ const Settings: NextPageWithLayout = () => {
 
     const external_connect = async () => {
         if (!client?.Connected) {
-            const opts = new ButtplugWebsocketConnectorOptions();
-            if (serverUrl.length) {
-                opts.Address = serverUrl;
+            try {
+                const opts = new ButtplugWebsocketConnectorOptions();
+                if (serverUrl.length) {
+                    opts.Address = serverUrl;
+                }
+                await connect(opts);
             }
-            await connect(opts);
+            catch (e) {
+                newError(e as Error)
+            }
         }
         setMoreSettings(false);
     }
 
     const embedded_connect = async () => {
         try {
-            if (!(navigator as typeof navigator & { bluetooth?: object }).bluetooth) throw "WebBluetooth is not supported on this browser." ;
+            if (!(navigator as typeof navigator & { bluetooth?: object }).bluetooth) throw new Error("WebBluetooth is not supported on this browser.");
             if (!client?.Connected) {
                 await connect(new ButtplugEmbeddedConnectorOptions());
             }
             await startScanning();
         }
         catch (e) {
-            newError(e as string)
+            newError(e as Error)
         }
         setMoreSettings(false);
     }
