@@ -1,4 +1,4 @@
-import { ButtplugClientDevice, ButtplugDeviceMessageType } from "buttplug";
+import { ButtplugClientDevice, ButtplugDeviceMessageType, MessageAttributes, RotationCmd } from "buttplug";
 import Slider from "rc-slider";
 import { FC, useState } from "react";
 import styles from 'styles/Slider.module.css';
@@ -12,6 +12,12 @@ interface BasicControllerProps {
 const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
+
+    let rotate_attributes: MessageAttributes | undefined = undefined;
+    try {
+        rotate_attributes = d.messageAttributes(ButtplugDeviceMessageType.RotateCmd);
+    }
+    catch {}
     
     return (
         <>  
@@ -32,6 +38,23 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                         />
                     </div>
                 ))
+            }
+            { rotate_attributes?.featureCount !== 0 }
+            {
+                Array(rotate_attributes?.featureCount).map((e, i) => {
+                    <div className="pb-2" key={i}>
+                        <Slider 
+                            defaultValue={50} 
+                            step={100 / (rotate_attributes?.stepCount?.at(i) ?? 10)}
+                            onChange={(v) => {
+                                const move_value = (Number(v) - 50) / 100;
+                                const clockwise = move_value < 0 ? false : true;
+                                d.rotate([new RotationCmd(i, move_value, clockwise)], clockwise)
+                            }} 
+                            className={styles.slider} 
+                        />
+                    </div>
+                })
             }
         </>
     )
