@@ -14,7 +14,8 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
     
     return (
-        <>
+        <>  
+            {vibrateStates.length !== 0 && <h2>Vibrate</h2>}
             { 
                 vibrateStates.map((e, i) => (
                     <div className="pb-2" key={i}>
