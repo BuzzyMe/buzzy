@@ -18,6 +18,8 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
         rotate_attributes = d.messageAttributes(ButtplugDeviceMessageType.RotateCmd);
     }
     catch {}
+
+    const [rotateStates, setRotateStates] = useState<number[]>(Array(Number(rotate_attributes?.featureCount)).fill(50));
     
     return (
         <>  
@@ -44,13 +46,21 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                 Array(rotate_attributes?.featureCount).map((e, i) => {
                     <div className="pb-2" key={i}>
                         <Slider 
-                            defaultValue={50} 
+                            value={rotateStates[i]} 
                             step={100 / (rotate_attributes?.stepCount?.at(i) ?? 10)}
                             onChange={(v) => {
                                 const move_value = (Number(v) - 50) / 100;
                                 const clockwise = move_value < 0 ? false : true;
                                 d.rotate([new RotationCmd(i, move_value, clockwise)], clockwise)
+                                const newRotateStates = [...rotateStates];
+                                newRotateStates[i] = v as number;
+                                setRotateStates(newRotateStates);
                             }} 
+                            onAfterChange={() => {
+                                const newRotateStates = [...rotateStates];
+                                newRotateStates[i] = 50;
+                                setRotateStates(newRotateStates);
+                            }}
                             className={styles.slider} 
                         />
                     </div>
