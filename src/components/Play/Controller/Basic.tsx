@@ -11,15 +11,10 @@ interface BasicControllerProps {
 
 const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-    const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
+    const [vibrateStates, setVibrateStates] = useState<number[]>(Array(vibrate_attributes?.featureCount ?? 0).fill(0));
 
-    let rotate_attributes: MessageAttributes | undefined = undefined;
-    try {
-        rotate_attributes = d.messageAttributes(ButtplugDeviceMessageType.RotateCmd);
-    }
-    catch {}
-
-    const [rotateStates, setRotateStates] = useState<number[]>(Array(Number(rotate_attributes?.featureCount)).fill(50));
+    const rotate_attributes = d.messageAttributes(ButtplugDeviceMessageType.RotateCmd);
+    const [rotateStates, setRotateStates] = useState<number[]>(Array(rotate_attributes?.featureCount ?? 0).fill(50));
     
     return (
         <>  
