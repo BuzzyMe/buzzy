@@ -1,4 +1,4 @@
-import { ButtplugClientDevice, ButtplugDeviceMessageType, MessageAttributes, RotationCmd } from "buttplug";
+import { ButtplugClientDevice, GenericDeviceMessageAttributes, MessageAttributes } from "buttplug";
 import Slider from "rc-slider";
 import { FC, useState } from "react";
 import styles from 'styles/Slider.module.css';
@@ -10,12 +10,12 @@ interface BasicControllerProps {
 }
 
 const BasicController: FC<BasicControllerProps> = ({device: d}) => {
-    const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-    const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
+    const vibrate_attributes = d.vibrateAttributes;
+    const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.length)).fill(0));
 
-    let rotate_attributes: MessageAttributes | undefined = undefined;
+    let rotate_attributes: GenericDeviceMessageAttributes[] | undefined = undefined;
     try {
-        rotate_attributes = d.messageAttributes(ButtplugDeviceMessageType.RotateCmd);
+        rotate_attributes = d.messageAttributes.RotateCmd;
     }
     catch {}
     
@@ -27,7 +27,7 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                     <div className="pb-2" key={i}>
                         <Slider 
                             value={e * 100} 
-                            step={100 / (vibrate_attributes?.stepCount?.at(i) ?? 10)}
+                            step={100 / (vibrate_attributes?.at(i)?.StepCount ?? 10)}
                             onChange={(v) => {
                                 const new_vib_states = [...vibrateStates];
                                 new_vib_states[i] = v as number / 100;
@@ -39,17 +39,17 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                     </div>
                 ))
             }
-            { rotate_attributes?.featureCount !== 0 }
+            { rotate_attributes?.length !== 0 }
             {
-                Array(rotate_attributes?.featureCount).map((e, i) => {
+                Array(rotate_attributes?.length).map((_e, i) => {
                     <div className="pb-2" key={i}>
                         <Slider 
                             defaultValue={50} 
-                            step={100 / (rotate_attributes?.stepCount?.at(i) ?? 10)}
+                            step={100 / (rotate_attributes?.at(i)?.StepCount ?? 10)}
                             onChange={(v) => {
                                 const move_value = (Number(v) - 50) / 100;
                                 const clockwise = move_value < 0 ? false : true;
-                                d.rotate([new RotationCmd(i, move_value, clockwise)], clockwise)
+                                d.rotate([[move_value, clockwise]], clockwise)
                             }} 
                             className={styles.slider} 
                         />

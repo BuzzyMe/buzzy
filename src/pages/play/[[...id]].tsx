@@ -20,7 +20,7 @@ const Play: NextPageWithLayout = () => {
         <div className="auto-limit-w pt-20 space-y-3">
             {
                 devices.length ? devices.map((d) => (
-                    <DevicePanel key={d.Index} device={d} />
+                    <DevicePanel key={d.index} device={d} />
                 )) :
                 <div className="card space-y-3">
                     <h1>No Devices Connected!</h1>

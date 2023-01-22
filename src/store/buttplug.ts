@@ -1,4 +1,4 @@
-import { ButtplugClient, ButtplugClientDevice, buttplugInit } from "buttplug";
+import { ButtplugClient, ButtplugClientDevice } from "buttplug";
 import multiplayer_buttplug_handler from "modules/multiplayer/buttplug/handler";
 import { PeerDevice } from "modules/multiplayer/peer/device";
 import create from "zustand";
@@ -19,17 +19,17 @@ const useButtplugStore = create<ButtplugState>((set, get) => ({
     newClientIfUndefined: async () => {
         let get_client = get().client;
         if (get_client) return get_client;
-        await buttplugInit();
+        // await buttplugInit();
         get_client ?? set((state) => {
             const client = new ButtplugClient("buzzy");
             client.on("deviceadded", (e) => {
                 set((state) => ({...state, devices: [...state.devices, e]}))
             })
             client.on("deviceremoved", (e) => {
-                set((state) => ({...state, devices: [...state.devices].filter((d) => d.Index !== e.Index)}));
+                set((state) => ({...state, devices: [...state.devices].filter((d) => d.index !== e.index)}));
             })
             client.on("scanningfinished", () => set((state) => ({...state})));
-            client.on("serverdisconnect", () => set((state) => ({...state})));
+            client.on("disconnect", () => set((state) => ({...state})));
             return {...state, client};
         })
         get_client = get().client;

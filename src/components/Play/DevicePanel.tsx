@@ -1,4 +1,4 @@
-import { ButtplugClientDevice, ButtplugDeviceMessageType } from "buttplug"
+import { ButtplugClientDevice } from "buttplug"
 import { PeerDevice } from "modules/multiplayer/peer/device"
 import { FC, useState } from "react"
 import BasicController from "./Controller/Basic"
@@ -16,9 +16,9 @@ enum ControllerType {
 const DevicePanel: FC<DeviceProps> = ({ device: d }) => {
     const [ controllerType, setControllerType ] = useState(ControllerType.Basic);
     return (
-        <div className="card space-y-3" key={d.Index}>
+        <div className="card space-y-3" key={d.index}>
             <h1>
-                {d.Name} {d instanceof PeerDevice ? "(Online)" : ""}
+                {d.name} {d instanceof PeerDevice ? "(Online)" : ""}
             </h1>
                 {
                     {
@@ -29,7 +29,7 @@ const DevicePanel: FC<DeviceProps> = ({ device: d }) => {
             <div className="action-container">
                 <button className="action" onClick={() => setControllerType(Number(!Boolean(controllerType)))}>Toggle Mode</button>
                 {
-                    d.messageAttributes(ButtplugDeviceMessageType.StopDeviceCmd) && 
+                    d.messageAttributes.StopDeviceCmd && 
                     <button className="action" onClick={() => d.stop()}>Stop</button>
                 }
             </div>

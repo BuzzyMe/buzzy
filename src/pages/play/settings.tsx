@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from "next";
 import { useState } from "react";
-import { ButtplugEmbeddedConnectorOptions, ButtplugWebsocketConnectorOptions } from "buttplug";
+import { ButtplugBrowserWebsocketClientConnector } from "buttplug";
 import useButtplugStore from "store/buttplug";
 import MainLayout from "layout";
 import ButtplugLayout from "layout/buttplug";
@@ -13,15 +13,12 @@ const Settings: NextPageWithLayout = () => {
     const { newError } = useErrorStore();
 
     const [ moreSettings, setMoreSettings ] = useState(false);
-    const [ serverUrl, setServerUrl ] = useState("");
+    const [ serverUrl, setServerUrl ] = useState("ws://localhost:12345");
 
     const external_connect = async () => {
-        if (!client?.Connected) {
+        if (!client?.connected) {
             try {
-                const opts = new ButtplugWebsocketConnectorOptions();
-                if (serverUrl.length) {
-                    opts.Address = serverUrl;
-                }
+                const opts = new ButtplugBrowserWebsocketClientConnector(serverUrl);
                 await connect(opts);
             }
             catch (e) {
@@ -31,19 +28,19 @@ const Settings: NextPageWithLayout = () => {
         setMoreSettings(false);
     }
 
-    const embedded_connect = async () => {
-        try {
-            if (await !(navigator as any).bluetooth?.getAvailability()) throw new Error("WebBluetooth is not supported on this browser.");
-            if (!client?.Connected) {
-                await connect(new ButtplugEmbeddedConnectorOptions());
-            }
-            await startScanning();
-        }
-        catch (e) {
-            newError(e as Error)
-        }
-        setMoreSettings(false);
-    }
+    // const embedded_connect = async () => {
+    //     try {
+    //         if (await !(navigator as any).bluetooth?.getAvailability()) throw new Error("WebBluetooth is not supported on this browser.");
+    //         if (!client?.Connected) {
+    //             await connect(new ButtplugEmbeddedConnectorOptions());
+    //         }
+    //         await startScanning();
+    //     }
+    //     catch (e) {
+    //         newError(e as Error)
+    //     }
+    //     setMoreSettings(false);
+    // }
 
     return (
         <div className="pt-20 auto-limit-w flex flex-col">
@@ -63,8 +60,8 @@ const Settings: NextPageWithLayout = () => {
                     <tbody>
                         {   
                             devices.length ? devices.map(d => (
-                                <tr className="border" key={d.Index}>
-                                    <td>{d.Name + (d instanceof PeerDevice ? "Online" : "") }</td>
+                                <tr className="border" key={d.index}>
+                                    <td>{d.name + (d instanceof PeerDevice ? "Online" : "") }</td>
                                     <td><button className="underline" onClick={() => d.emit("deviceremoved")}>Disconnect</button></td>
                                 </tr>
                             )) : 
@@ -77,9 +74,9 @@ const Settings: NextPageWithLayout = () => {
                 {moreSettings && <input type="text" className="input w-full" placeholder="Initiface Server URL" value={serverUrl} onChange={(e) => setServerUrl(e.target.value)} />}
                 <div className="action-container flex-wrap">
                     {
-                        !client?.Connected ?
+                        !client?.connected ?
                         <>
-                            <button className="action" onClick={embedded_connect}>WebBluetooth</button>
+                            {/* <button className="action" onClick={embedded_connect}>WebBluetooth</button> */}
                             <button className="action" onClick={external_connect}>Intiface</button>
                             <button className="action" onClick={() => setMoreSettings(!moreSettings)}>More Settings</button>
                         </> :

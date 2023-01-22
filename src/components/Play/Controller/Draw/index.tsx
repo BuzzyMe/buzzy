@@ -1,11 +1,9 @@
-import { ButtplugClientDevice, ButtplugDeviceMessageType } from "buttplug"
+import { ButtplugClientDevice } from "buttplug"
 import { PeerDevice } from "modules/multiplayer/peer/device"
 import { FC, useRef, useState } from "react"
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core';
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import Draggable from "./Draggable";
-import { clear, time } from "console";
-import { clearTimeout } from "timers";
 
 interface DrawControllerProps {
     device: ButtplugClientDevice | PeerDevice
@@ -13,8 +11,8 @@ interface DrawControllerProps {
 
 const DrawController: FC<DrawControllerProps> = ({device: d}) => {
     const container_ref = useRef<HTMLDivElement>(null);
-    const vibrate_attributes = d.messageAttributes(ButtplugDeviceMessageType.VibrateCmd);
-    const [vibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.featureCount)).fill(0));
+    const vibrate_attributes = d.vibrateAttributes;
+    const [vibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.length)).fill(0));
 
     const ondragmove = (e: DragMoveEvent) => {
         if (container_ref.current) {
