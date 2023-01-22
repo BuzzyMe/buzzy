@@ -4,6 +4,9 @@ import useButtplugStore from "store/buttplug";
 import { getDevicePtr, PeerDevice } from "./device";
 import { PeerDevicesMessage, PeerMessage } from "./message";
 import { JSONTools } from "./tools";
+import * as Messages from "buttplug/dist/main/src/core/Messages";
+import { any } from "zod";
+
 
 const OnPeerDevicesMessage = (data: PeerDevicesMessage, c: DataConnection) => {
     const {devices, setDevices} = useButtplugStore.getState();
@@ -38,22 +41,25 @@ const allowedExecutableMessageMethods = [
     "stop"
 ]
 
+class BasicButtplugMessage extends Messages.ButtplugMessage {}
+
 export const handler = (conn: DataConnection) => {
-    conn.on('data', (data) => {
+
+    conn.on('data', async (data) => {
         const d = data as PeerMessage;
         if (d.type === "devices") {
             OnPeerDevicesMessage(d, conn);
             return;
         }
-        if (d.type === "method") {
-            if (!allowedExecutableMessageMethods.includes(d.method)) return;
-            const {devices} = useButtplugStore.getState();
-            const device_index = devices.findIndex(e => getDevicePtr(e) === d.devicePtr);
-            if (device_index !== -1) {
-                const args: unknown[] = (d as any).params || [];
-                (devices[device_index] as any)[d.method](...args);
+        if (d.type === "msg") {
+            const {client} = useButtplugStore.getState();
+            for (const [key, value] of Object.entries(d.data)) {
+                let message = new BasicButtplugMessage(value.Id);
+                message = Object.assign(message, value);
+                const constructor = (await import("buttplug/dist/main/src/core/Messages"))[key] as any;
+                message = Object.setPrototypeOf(message, constructor.prototype);
+                (client as any)?.sendMessage(message);
             }
-            return;
         }
     })
     conn.on("close", () => {

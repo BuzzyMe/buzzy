@@ -21,13 +21,13 @@ const multiplayer_buttplug_handler = async (client: ButtplugClient) => {
         }
     }
 
-    client?.on("deviceadded", () => {
+    client?.on("deviceadded", (d) => {
         const { devices } = useButtplugStore.getState();
         send_devices([...devices])
     })
     client?.on("deviceremoved", (e) => {
         const { devices } = useButtplugStore.getState();
-        send_devices([...devices].filter((d) => d.Index !== e.Index));
+        send_devices([...devices].filter((d) => d.index !== e.Index));
     })
 }
 

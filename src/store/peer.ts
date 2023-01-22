@@ -33,7 +33,8 @@ const usePeerStore = create<PeerStoreState>((set, get) => {
 
             const peer = new Peer({...getPeerConfig()});
             peer?.on("connection", (c) => {
-                c.on("data", (data) => {
+                c.on('data', (data) => {
+                    console.log(data);
                     const d = data as PeerMessage;
                     const { devices } = useButtplugStore.getState();
                     if (d.type === "devices") {
