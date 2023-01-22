@@ -1,4 +1,4 @@
-import { ButtplugClient, ButtplugClientDevice, buttplugInit } from "buttplug";
+import { ButtplugClient, ButtplugClientDevice } from "buttplug";
 import React, { Component, ReactNode } from "react";
 import { ButtplugContext, ButtplugContextState, DefaultButtplugContext } from ".";
 
@@ -12,29 +12,29 @@ export class ButtplugProvider extends Component<ButtplugProviderProps, ButtplugC
         this.state = {...DefaultButtplugContext};
     }
     componentDidMount(): void {
-        buttplugInit().then(() => {
-            const client = new ButtplugClient("Buzzy");
-            client.on("deviceadded", (e) => {
-                this.setState({
-                    devices: [...this.state.devices, e]
-                })
-            })
-            client.on("deviceremoved", (e) => {
-                const devices = [...this.state.devices]
-                this.setState({
-                    devices: devices.filter((d) => d.Index !== e.Index)
-                })
-            })
-            const setDevices = (devices: ButtplugClientDevice[]) => {
-                console.log("setState")
-                this.setState({devices})
-            }
-            this.setState({
-                client,
-                initialized: true,
-                setDevices
-            })
-        })
+        // buttplugInit().then(() => {
+        //     const client = new ButtplugClient("Buzzy");
+        //     client.on("deviceadded", (e) => {
+        //         this.setState({
+        //             devices: [...this.state.devices, e]
+        //         })
+        //     })
+        //     client.on("deviceremoved", (e) => {
+        //         const devices = [...this.state.devices]
+        //         this.setState({
+        //             devices: devices.filter((d) => d.Index !== e.Index)
+        //         })
+        //     })
+        //     const setDevices = (devices: ButtplugClientDevice[]) => {
+        //         console.log("setState")
+        //         this.setState({devices})
+        //     }
+        //     this.setState({
+        //         client,
+        //         initialized: true,
+        //         setDevices
+        //     })
+        // })
     }
     render(): ReactNode {
         return (
