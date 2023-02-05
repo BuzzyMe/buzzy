@@ -1,4 +1,4 @@
-import { ButtplugClientDevice, GenericDeviceMessageAttributes, MessageAttributes } from "buttplug";
+import { ButtplugClientDevice, GenericDeviceMessageAttributes } from "buttplug";
 import Slider from "rc-slider";
 import { FC, useState } from "react";
 import styles from 'styles/Slider.module.css';
@@ -13,11 +13,8 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
     const vibrate_attributes = d.vibrateAttributes;
     const [vibrateStates, setVibrateStates] = useState<number[]>(Array(Number(vibrate_attributes?.length)).fill(0));
 
-    let rotate_attributes: GenericDeviceMessageAttributes[] | undefined = undefined;
-    try {
-        rotate_attributes = d.messageAttributes.RotateCmd;
-    }
-    catch {}
+    const rotate_attributes: GenericDeviceMessageAttributes[] | undefined = d.messageAttributes.RotateCmd;
+    const [rotateStates, setRotateStates] = useState<number[]>(Array(rotate_attributes?.length ?? 0).fill(50));
     
     return (
         <>  
@@ -44,13 +41,21 @@ const BasicController: FC<BasicControllerProps> = ({device: d}) => {
                 Array(rotate_attributes?.length).map((_e, i) => {
                     <div className="pb-2" key={i}>
                         <Slider 
-                            defaultValue={50} 
+                            value={rotateStates[i]} 
                             step={100 / (rotate_attributes?.at(i)?.StepCount ?? 10)}
                             onChange={(v) => {
                                 const move_value = (Number(v) - 50) / 100;
                                 const clockwise = move_value < 0 ? false : true;
                                 d.rotate([[move_value, clockwise]], clockwise)
+                                const newRotateStates = [...rotateStates];
+                                newRotateStates[i] = v as number;
+                                setRotateStates(newRotateStates);
                             }} 
+                            onAfterChange={() => {
+                                const newRotateStates = [...rotateStates];
+                                newRotateStates[i] = 50;
+                                setRotateStates(newRotateStates);
+                            }}
                             className={styles.slider} 
                         />
                     </div>
