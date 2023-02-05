@@ -54,6 +54,7 @@ export const handler = (conn: DataConnection) => {
         if (d.type === "msg") {
             const {client} = useButtplugStore.getState();
             for (const [key, value] of Object.entries(d.data)) {
+                if (key.startsWith("Raw")) return;
                 let message = new BasicButtplugMessage(value.Id);
                 message = Object.assign(message, value);
                 const constructor = (await import("buttplug/dist/main/src/core/Messages"))[key] as any;
